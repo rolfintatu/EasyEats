@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infra
 		{B83981A5-7BB4-40D7-8764-48C97623E2AB} = {B83981A5-7BB4-40D7-8764-48C97623E2AB}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUi", "src\WebUi\WebUi.csproj", "{4EAED8F2-439D-46AC-AAB2-3B8004A6272A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUi", "src\WebUi\WebUi.csproj", "{4EAED8F2-439D-46AC-AAB2-3B8004A6272A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

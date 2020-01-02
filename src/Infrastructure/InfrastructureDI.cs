@@ -24,6 +24,7 @@ namespace Infrastructure.Identity
                     configuration.GetConnectionString("EasyEatsConnection"), x => x.MigrationsAssembly("Infrastructure")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.Configure<IdentityOptions>(options =>
