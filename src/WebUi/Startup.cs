@@ -59,6 +59,7 @@ namespace WebUi
                     };
                 });
 
+
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Easy Eats v1", Version = "v1" });

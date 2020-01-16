@@ -11,7 +11,30 @@ namespace Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Food> builder)
         {
-            builder.HasNoKey();
+
+            builder.HasOne<OrderDetails>(x => x.OrderDetails)
+                .WithMany(x => x.Foods)
+                .HasForeignKey(x => x.OrderDetailsId);
+
+            builder.Property(x => x.Id)
+                .UseIdentityColumn(1,1);
+
+            builder.Property(x => x.Price)
+                .HasDefaultValue(0)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Property(x => x.Quantity)
+                .HasDefaultValue(1);
+
+            builder.Property(x => x.Category)
+                .HasColumnType("nvarchar(50)");
+
+            builder.Property(x => x.Description)
+                .HasDefaultValue("nvarchar(256)");
+
+            builder.Property(x => x.Calories)
+                .HasDefaultValue(0);
+
         }
     }
 }
