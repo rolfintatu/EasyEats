@@ -8,10 +8,11 @@ using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Data;
+using AppCore.Interfaces;
 
 namespace Infrastructure.Identity
 {
-    public static class InfrastructureDI
+    public static class IoC
     {
         public static void Config(IServiceCollection services, IConfiguration configuration)
         {
@@ -20,7 +21,7 @@ namespace Infrastructure.Identity
                 options.UseSqlServer(
                     configuration.GetConnectionString("IdentityConnection"), x =>x.MigrationsAssembly("Infrastructure")));
 
-            services.AddDbContext<MyDbContext>(options =>
+            services.AddDbContext<EasyEatsDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("EasyEatsConnection"), x => x.MigrationsAssembly("Infrastructure")));
 
@@ -30,8 +31,15 @@ namespace Infrastructure.Identity
 
             services.Configure<IdentityOptions>(options =>
             {
-                
+                options.Password = new PasswordOptions
+                {
+                    RequiredLength = 6
+                };
             });
+
+            services.AddTransient<IEasyEatsDbContext, EasyEatsDbContext>();
+            services.AddTransient<INotificationService, NotificationService>();
+            services.AddScoped<IEasyEatsDbContext>(x => x.GetService<EasyEatsDbContext>());
 
         }
     }

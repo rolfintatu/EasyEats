@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(EasyEatsDbContext))]
     partial class MyDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -149,7 +149,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("OrderDetailsId")
+                    b.Property<int?>("OrderDetailsId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -193,7 +193,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderDetailsId")
+                    b.Property<int?>("OrderDetailsId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -312,20 +312,16 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AppCore.Entities.Drink", b =>
                 {
-                    b.HasOne("AppCore.Entities.OrderDetails", "OrderDetails")
+                    b.HasOne("AppCore.Entities.OrderDetails", null)
                         .WithMany("Drinks")
-                        .HasForeignKey("OrderDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderDetailsId");
                 });
 
             modelBuilder.Entity("AppCore.Entities.Food", b =>
                 {
-                    b.HasOne("AppCore.Entities.OrderDetails", "OrderDetails")
+                    b.HasOne("AppCore.Entities.OrderDetails", null)
                         .WithMany("Foods")
-                        .HasForeignKey("OrderDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderDetailsId");
                 });
 
             modelBuilder.Entity("AppCore.Entities.OrderDetails", b =>

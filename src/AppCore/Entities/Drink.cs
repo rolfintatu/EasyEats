@@ -16,8 +16,8 @@ namespace AppCore.Entities
         public string Description { get; set; }
 
 
-        public int OrderDetailsId { get; set; }
-        public OrderDetails OrderDetails { get; set; }
+        //public int OrderDetailsId { get; set; }
+        //public OrderDetails OrderDetails { get; set; }
 
     }
 }

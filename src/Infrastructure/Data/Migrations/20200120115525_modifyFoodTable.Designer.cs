@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(EasyEatsDbContext))]
-    [Migration("20200116191733_InitDB")]
-    partial class InitDB
+    [Migration("20200120115525_modifyFoodTable")]
+    partial class modifyFoodTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -195,7 +195,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderDetailsId")
+                    b.Property<int?>("OrderDetailsId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -323,11 +323,9 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AppCore.Entities.Food", b =>
                 {
-                    b.HasOne("AppCore.Entities.OrderDetails", "OrderDetails")
+                    b.HasOne("AppCore.Entities.OrderDetails", null)
                         .WithMany("Foods")
-                        .HasForeignKey("OrderDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderDetailsId");
                 });
 
             modelBuilder.Entity("AppCore.Entities.OrderDetails", b =>

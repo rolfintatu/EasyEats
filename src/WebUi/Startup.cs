@@ -1,25 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore.Design;
 using Infrastructure.Identity;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Reflection;
-using System.IO;
-using Microsoft.OpenApi.Any;
+using FluentValidation.AspNetCore;
+using AppCore.Interfaces;
+using WebUi.Services;
+using AutoMapper;
 
 namespace WebUi
 {
@@ -35,11 +28,21 @@ namespace WebUi
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
+
             services.AddControllers();
 
-            InfrastructureDI.Config(services, Configuration);
+            AppCore.IoC.Config(Configuration, services);
+
+            IoC.Config(services, Configuration);
 
             services.AddRazorPages();
+
+            services.AddHttpContextAccessor();
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IEasyEatsDbContext>());
 
             services.AddAuthentication(options =>
             {

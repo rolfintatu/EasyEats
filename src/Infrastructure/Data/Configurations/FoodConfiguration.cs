@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using AppCore.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using AppCore.Common;
 
 namespace Infrastructure.Data.Configurations
 {
@@ -12,9 +13,10 @@ namespace Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Food> builder)
         {
 
-            builder.HasOne<OrderDetails>(x => x.OrderDetails)
-                .WithMany(x => x.Foods)
-                .HasForeignKey(x => x.OrderDetailsId);
+            //builder.HasOne<OrderDetails>(x => x.OrderDetails)
+            //    .WithMany(x => x.Foods)
+            //    .HasForeignKey(x => x.OrderDetailsId);
+
 
             builder.Property(x => x.Id)
                 .UseIdentityColumn(1,1);
