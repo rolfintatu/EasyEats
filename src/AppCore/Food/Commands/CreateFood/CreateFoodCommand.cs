@@ -52,7 +52,7 @@ namespace AppCore.Food.Commands.CreateFood
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            await _mediator.Publish(new FoodCreated() { FoodId = request.Id }, cancellationToken);
+            await _mediator.Publish(new FoodCreated() { FoodName = food.Name}, cancellationToken);
 
             return Unit.Value;
         }

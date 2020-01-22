@@ -10,7 +10,7 @@ namespace AppCore.Food.Commands.CreateFood
 {
     public class FoodCreated : INotification
     {
-        public int FoodId { get; set; }
+        public string FoodName { get; set; }
 
         public class FoodCreatedHandler : INotificationHandler<FoodCreated>
         {
@@ -23,7 +23,7 @@ namespace AppCore.Food.Commands.CreateFood
 
             public async Task Handle(FoodCreated notification, CancellationToken cancellationToken)
             {
-                await notificationService.SendAsync("This is a message!");
+                await notificationService.SendAsync($"A food with id:{notification.FoodName} was added in database.");
             }
         }
     }

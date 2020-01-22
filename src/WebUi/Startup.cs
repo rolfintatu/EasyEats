@@ -5,14 +5,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Infrastructure.Identity;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FluentValidation.AspNetCore;
 using AppCore.Interfaces;
 using WebUi.Services;
-using AutoMapper;
 
 namespace WebUi
 {
@@ -34,7 +32,7 @@ namespace WebUi
 
             AppCore.IoC.Config(Configuration, services);
 
-            IoC.Config(services, Configuration);
+            Infrastructure.IoC.Config(services, Configuration);
 
             services.AddRazorPages();
 

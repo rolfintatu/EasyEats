@@ -1,16 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Data;
 using AppCore.Interfaces;
+using Infrastructure.Identity;
 
-namespace Infrastructure.Identity
+namespace Infrastructure
 {
     public static class IoC
     {

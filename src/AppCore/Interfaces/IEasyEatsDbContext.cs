@@ -7,7 +7,7 @@ namespace AppCore.Interfaces
 {
     public interface IEasyEatsDbContext
     {
-        DbSet<Drink> Drinks { get; set; }
+        DbSet<Entities.Drink> Drinks { get; set; }
         DbSet<Entities.Food> Foods { get; set; }
         DbSet<OrderDetails> OrderDetails { get; set; }
         DbSet<Order> Orders { get; set; }
