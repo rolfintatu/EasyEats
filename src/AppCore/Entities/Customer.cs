@@ -14,8 +14,8 @@ namespace AppCore.Entities
 
         public string Id { get; set; }
         public string Name { get; set; }
+        public int Phone { get; set; } 
         public Address Address { get; set; }
-        public int Phone { get; set; }
 
         public List<Reservation> Reservations { get; set; }
     }

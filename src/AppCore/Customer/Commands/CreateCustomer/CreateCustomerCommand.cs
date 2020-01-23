@@ -1,0 +1,42 @@
+﻿using AppCore.Interfaces;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace AppCore.Customer.Commands.CreateCustomer
+{
+    public class CreateCustomerCommand : IRequest
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string NumberPhone { get; set; }
+    }
+
+    public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand>
+    {
+        private readonly IEasyEatsDbContext context;
+        private readonly IMediator mediator;
+
+        public CreateCustomerHandler(IEasyEatsDbContext context
+            ,IMediator mediator)
+        {
+            this.context = context;
+            this.mediator = mediator;
+        }
+
+        // TODO: Change number phone type
+        public async Task<Unit> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        {
+            await context.Customers.AddAsync(new Entities.Customer { Id = request.Id, Name = request.Name, Phone = 0 });
+
+            var DbResponse = await context.SaveChangesAsync(cancellationToken);
+
+            await mediator.Publish(new CustomerCreated() { Id = request.Id, Name = request.Name, DbResponse = DbResponse });
+            
+            return Unit.Value;
+        }
+    }
+}
