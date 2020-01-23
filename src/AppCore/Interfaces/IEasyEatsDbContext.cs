@@ -10,7 +10,9 @@ namespace AppCore.Interfaces
         DbSet<Entities.Drink> Drinks { get; set; }
         DbSet<Entities.Food> Foods { get; set; }
         DbSet<OrderDetails> OrderDetails { get; set; }
-        DbSet<Order> Orders { get; set; }
+        DbSet<Entities.Customer> Customers { get; set; }
+
+
 
         Task<int> SaveChangesAsync(CancellationToken cancelletion);
 

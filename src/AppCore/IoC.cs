@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using AutoMapper;
 using AppCore.Mapping;
+using AppCore.Interfaces;
 
 namespace AppCore
 {

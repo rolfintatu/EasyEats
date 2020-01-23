@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using AppCore.ValueObjects;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AppCore.Entities
@@ -13,7 +14,7 @@ namespace AppCore.Entities
 
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
+        public Address Address { get; set; }
         public int Phone { get; set; }
 
         public List<Reservation> Reservations { get; set; }

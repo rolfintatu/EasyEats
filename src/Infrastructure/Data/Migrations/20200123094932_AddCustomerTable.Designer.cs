@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(EasyEatsDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200123094932_AddCustomerTable")]
+    partial class AddCustomerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,6 +59,9 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)");
@@ -290,34 +295,6 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("AppCore.Entities.Bill", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("AppCore.Entities.Customer", b =>
-                {
-                    b.OwnsOne("AppCore.ValueObjects.Address", "Address", b1 =>
-                        {
-                            b1.Property<string>("CustomerId")
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.Property<string>("AddressLine")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("City")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Country")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("PostalCode")
-                                .HasColumnType("int");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
                 });
 
             modelBuilder.Entity("AppCore.Entities.DiningTableTrack", b =>

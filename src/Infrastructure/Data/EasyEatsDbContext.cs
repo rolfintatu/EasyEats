@@ -33,6 +33,7 @@ namespace Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Drink> Drinks { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         //TODO: Add history/audit table
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

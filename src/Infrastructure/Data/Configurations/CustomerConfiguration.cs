@@ -11,14 +11,14 @@ namespace Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
+
+            builder.OwnsOne(x => x.Address);
+
             builder.Property(x => x.Id)
                 .HasColumnType("nvarchar(256)");
 
             builder.Property(x => x.Name)
                 .HasColumnType("nvarchar(50)");
-
-            builder.Property(x => x.Address)
-                .HasColumnType("nvarchar(128)");
 
             builder.Property(x => x.Phone)
                 .HasMaxLength(10);
