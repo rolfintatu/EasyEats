@@ -1,20 +1,24 @@
-﻿using AppCore.Interfaces;
+﻿using AppCore.Dtos;
+using AppCore.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AppCore.Customer.Queries.CustomerDetails
 {
-    public class CustomerDetailsQuery : IRequest<CustomerDetails>
+    public class CustomerDetailsQuery : IRequest<CustomerDetailsDto>
     {
+        public string UserId { get; set; }
     }
 
-    public class CustomerDetailsHandler : IRequestHandler<CustomerDetailsQuery, CustomerDetails>
+    public class CustomerDetailsHandler : IRequestHandler<CustomerDetailsQuery, CustomerDetailsDto>
     {
         private readonly IEasyEatsDbContext context;
         private readonly ICurrentUserService currentUser;
@@ -30,12 +34,15 @@ namespace AppCore.Customer.Queries.CustomerDetails
         }
 
 
-        public async Task<CustomerDetails> Handle(CustomerDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<CustomerDetailsDto> Handle(CustomerDetailsQuery request, CancellationToken cancellationToken)
         {
-            var customerDetails = await context.Customers
-                .SingleOrDefaultAsync(x => x.Id == currentUser.UserId, cancellationToken);
 
-            return mapper.Map<CustomerDetails>(customerDetails);
+            var result = await context.Customers.Where(x => x.Id == request.UserId)
+                .FirstOrDefaultAsync();
+
+            var customer = mapper.Map<CustomerDetailsDto>(result);
+
+            return mapper.Map<CustomerDetailsDto>(customer);
 
         }
     }

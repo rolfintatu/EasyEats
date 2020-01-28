@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppCore.Customer.Commands.AddAddress;
 using AppCore.Customer.Commands.DeleteAddress;
 using AppCore.Customer.Queries.CustomerDetails;
+using AppCore.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace WebUi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class CustomerController : BaseController
     {
 
@@ -40,9 +41,9 @@ namespace WebUi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CustomerDetails>> GetDetails()
+        public async Task<ActionResult<CustomerDetailsDto>> GetDetails([FromQuery]string id)
         {
-            var customerDetails = await mediator.Send(new CustomerDetailsQuery());
+            var customerDetails = await mediator.Send(new CustomerDetailsQuery() { UserId = id });
 
             return customerDetails;
         }

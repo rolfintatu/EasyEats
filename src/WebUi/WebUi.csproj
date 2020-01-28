@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-WebUi-616D4CE5-4329-4200-8EF2-EC92975BF5D4</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\DrinkController.cs" />
+    <Compile Remove="Controllers\FoodController.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
