@@ -5,7 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Drink\**" />
+    <Compile Remove="Food\**" />
+    <EmbeddedResource Remove="Drink\**" />
+    <EmbeddedResource Remove="Food\**" />
+    <None Remove="Drink\**" />
+    <None Remove="Food\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Reservation\Queries\ReservationsByUser\" />
   </ItemGroup>
 
   <ItemGroup>
