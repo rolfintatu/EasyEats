@@ -8,18 +8,10 @@ using System.Text;
 
 namespace Infrastructure.Data.Configurations
 {
-    public class TableConfiguration : IEntityTypeConfiguration<DiningTable>
+    public class TableConfig : IEntityTypeConfiguration<Table>
     {
-        public void Configure(EntityTypeBuilder<DiningTable> builder)
+        public void Configure(EntityTypeBuilder<Table> builder)
         {
-            builder.HasMany<Reservation>(x => x.Reservations)
-                .WithOne(x => x.Table)
-                .HasForeignKey(x => x.TableId);
-
-            builder.HasOne<DiningTableTrack>(x => x.TableTruck)
-                .WithOne(x => x.DiningTable)
-                .HasForeignKey<DiningTableTrack>(x => x.TableId);
-
             builder.Property(x => x.Id)
                 .UseIdentityColumn(1, 1);
 
@@ -30,7 +22,6 @@ namespace Infrastructure.Data.Configurations
             builder.Property(x => x.ChairsCount)
                 .HasMaxLength(4)
                 .HasDefaultValue(1);
-
         }
     }
 }

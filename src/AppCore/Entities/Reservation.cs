@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AppCore.ValueObjects;
+using AppCore.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,14 +9,19 @@ namespace AppCore.Entities
     public class Reservation
     {
         public int Id { get; private set; }
-        public DateTime Date { get; set; }
-        public DateTime StartTime { get; set; }
+        public Date Date { get; set; }
+        public int Hour { get; set; }
         public int Duration { get; set; }
+        public ReservationStatus Status { get; set; }
 
         public string CustomerId { get; set; }
         public Customer Customer { get; set; }
 
         public int TableId { get; set; }
-        public DiningTable Table { get; set; }
+        public Table Table { get; set; }
+
+        public int? OrderId { get; set; }
+        public Order Order { get; set; }
+
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(EasyEatsDbContext))]
-    [Migration("20200123094932_AddCustomerTable")]
-    partial class AddCustomerTable
+    [Migration("20200128110542_Nullable_OrderId_Reservation")]
+    partial class Nullable_OrderId_Reservation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,16 +52,13 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Bill");
+                    b.ToTable("Bills");
                 });
 
             modelBuilder.Entity("AppCore.Entities.Customer", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)");
@@ -75,146 +72,6 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.DiningTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ChairsCount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasMaxLength(4)
-                        .HasDefaultValue(1);
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(30)")
-                        .HasDefaultValue("Open");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DiningTable");
-                });
-
-            modelBuilder.Entity("AppCore.Entities.DiningTableTrack", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TableId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.HasIndex("TableId")
-                        .IsUnique();
-
-                    b.ToTable("DiningTableTrack");
-                });
-
-            modelBuilder.Entity("AppCore.Entities.Drink", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Calories")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("OrderDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderDetailsId");
-
-                    b.ToTable("Drinks");
-                });
-
-            modelBuilder.Entity("AppCore.Entities.Food", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Calories")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Description")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("nvarchar(256)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OrderDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
-
-                    b.Property<int>("Quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderDetailsId");
-
-                    b.ToTable("Foods");
-                });
-
             modelBuilder.Entity("AppCore.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -224,10 +81,15 @@ namespace Infrastructure.Data.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -255,6 +117,43 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("OrderDetails");
                 });
 
+            modelBuilder.Entity("AppCore.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Calories")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OrderDetailsId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderDetailsId");
+
+                    b.ToTable("Products");
+                });
+
             modelBuilder.Entity("AppCore.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
@@ -267,14 +166,20 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Hour")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(30)")
+                        .HasDefaultValue("Waiting");
 
                     b.Property<int>("TableId")
                         .HasColumnType("int");
@@ -283,9 +188,39 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("OrderId")
+                        .IsUnique()
+                        .HasFilter("[OrderId] IS NOT NULL");
+
                     b.HasIndex("TableId");
 
-                    b.ToTable("Reservation");
+                    b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("AppCore.Entities.Table", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChairsCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasMaxLength(4)
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(30)")
+                        .HasDefaultValue("Open");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("AppCore.Entities.Bill", b =>
@@ -297,33 +232,39 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AppCore.Entities.DiningTableTrack", b =>
+            modelBuilder.Entity("AppCore.Entities.Customer", b =>
                 {
-                    b.HasOne("AppCore.Entities.Order", "Order")
-                        .WithOne("TableTrack")
-                        .HasForeignKey("AppCore.Entities.DiningTableTrack", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("AppCore.ValueObjects.Address", "Address", b1 =>
+                        {
+                            b1.Property<string>("CustomerId")
+                                .HasColumnType("nvarchar(256)");
 
-                    b.HasOne("AppCore.Entities.DiningTable", "DiningTable")
-                        .WithOne("TableTruck")
-                        .HasForeignKey("AppCore.Entities.DiningTableTrack", "TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                            b1.Property<string>("AddressLine")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("PostalCode")
+                                .HasColumnType("int");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Drink", b =>
+            modelBuilder.Entity("AppCore.Entities.Order", b =>
                 {
-                    b.HasOne("AppCore.Entities.OrderDetails", null)
-                        .WithMany("Drinks")
-                        .HasForeignKey("OrderDetailsId");
-                });
-
-            modelBuilder.Entity("AppCore.Entities.Food", b =>
-                {
-                    b.HasOne("AppCore.Entities.OrderDetails", null)
-                        .WithMany("Foods")
-                        .HasForeignKey("OrderDetailsId");
+                    b.HasOne("AppCore.Entities.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("AppCore.Entities.OrderDetails", b =>
@@ -335,17 +276,52 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AppCore.Entities.Product", b =>
+                {
+                    b.HasOne("AppCore.Entities.OrderDetails", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderDetailsId");
+                });
+
             modelBuilder.Entity("AppCore.Entities.Reservation", b =>
                 {
                     b.HasOne("AppCore.Entities.Customer", "Customer")
                         .WithMany("Reservations")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("AppCore.Entities.DiningTable", "Table")
+                    b.HasOne("AppCore.Entities.Order", "Order")
+                        .WithOne("Reservation")
+                        .HasForeignKey("AppCore.Entities.Reservation", "OrderId");
+
+                    b.HasOne("AppCore.Entities.Table", "Table")
                         .WithMany("Reservations")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsOne("AppCore.ValueObjects.Date", "Date", b1 =>
+                        {
+                            b1.Property<int>("ReservationId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<int>("Day")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Month")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Year")
+                                .HasColumnType("int");
+
+                            b1.HasKey("ReservationId");
+
+                            b1.ToTable("Reservations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ReservationId");
+                        });
                 });
 #pragma warning restore 612, 618
         }

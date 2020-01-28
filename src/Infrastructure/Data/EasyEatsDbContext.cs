@@ -23,17 +23,19 @@ namespace Infrastructure.Data
             this.currentUser = currentUser;
         }
 
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Bill> Bills { get; set; }
+        public DbSet<Table> Tables { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
-        public DbSet<Food> Foods { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
-        public DbSet<Drink> Drinks { get; set; }
-        public DbSet<Customer> Customers { get; set; }
 
         //TODO: Add history/audit table
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

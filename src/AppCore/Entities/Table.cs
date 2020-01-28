@@ -5,14 +5,17 @@ using System.Text;
 
 namespace AppCore.Entities
 {
-    public class DiningTable
+    public class Table
     {
+        public Table()
+        {
+            this.Reservations = new List<Reservation>();
+        }
+
         public int Id { get; private set; }
-        public TableStatus Status { get; set; }
         public int ChairsCount { get; set; }
+        public TableStatus Status { get; set; }
 
-        public DiningTableTrack TableTruck { get; set; }
         public List<Reservation> Reservations { get; set; }
-
     }
 }

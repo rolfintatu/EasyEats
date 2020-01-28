@@ -9,8 +9,7 @@ namespace AppCore.Entities
 
         public OrderDetails()
         {
-            this.Drinks = new List<Drink>();
-            this.Foods = new List<Food>();
+            this.Products = new List<Product>();
         }
 
         public int Id { get; private set; }
@@ -19,8 +18,7 @@ namespace AppCore.Entities
         public int OrderId { get; set; }
         public Order Order { get; set; }
 
-        public List<Drink> Drinks { get; set; }
-        public List<Food> Foods { get; set; }
+        public List<Product> Products { get; set; }
 
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AppCore.Entities
 {
-    public class Food
+    public class Product
     {
         public int Id { get; private set; }
         public string Name { get; set; }
@@ -14,9 +14,5 @@ namespace AppCore.Entities
         public Category Category { get; set; }
         public int Calories { get; set; }
         public string Description { get; set; }
-
-        //public int OrderDetailsId { get; set; }
-        //public OrderDetails OrderDetails { get; set; }
-
     }
 }
