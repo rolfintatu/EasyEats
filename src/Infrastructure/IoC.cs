@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Data;
-using AppCore.Interfaces;
+using Application.Common.Interfaces;
 using Infrastructure.Identity;
 
 namespace Infrastructure

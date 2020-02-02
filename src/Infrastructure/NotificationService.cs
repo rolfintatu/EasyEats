@@ -1,4 +1,4 @@
-﻿using AppCore.Interfaces;
+﻿using Application.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

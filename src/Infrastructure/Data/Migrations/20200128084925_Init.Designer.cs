@@ -21,7 +21,7 @@ namespace Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AppCore.Entities.Bill", b =>
+            modelBuilder.Entity("Domain.Entities.Bill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Bills");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Customer", b =>
+            modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(256)");
@@ -72,7 +72,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Order", b =>
+            modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +94,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.OrderDetails", b =>
+            modelBuilder.Entity("Domain.Entities.OrderDetails", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Product", b =>
+            modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +154,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Reservation", b =>
+            modelBuilder.Entity("Domain.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,7 +196,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Table", b =>
+            modelBuilder.Entity("Domain.Entities.Table", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -222,18 +222,18 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Tables");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Bill", b =>
+            modelBuilder.Entity("Domain.Entities.Bill", b =>
                 {
-                    b.HasOne("AppCore.Entities.Order", "Order")
+                    b.HasOne("Domain.Entities.Order", "Order")
                         .WithOne("Bill")
-                        .HasForeignKey("AppCore.Entities.Bill", "OrderId")
+                        .HasForeignKey("Domain.Entities.Bill", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Customer", b =>
+            modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
-                    b.OwnsOne("AppCore.ValueObjects.Address", "Address", b1 =>
+                    b.OwnsOne("Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<string>("CustomerId")
                                 .HasColumnType("nvarchar(256)");
@@ -259,48 +259,48 @@ namespace Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Order", b =>
+            modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.HasOne("AppCore.Entities.Customer", "Customer")
+                    b.HasOne("Domain.Entities.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.OrderDetails", b =>
+            modelBuilder.Entity("Domain.Entities.OrderDetails", b =>
                 {
-                    b.HasOne("AppCore.Entities.Order", "Order")
+                    b.HasOne("Domain.Entities.Order", "Order")
                         .WithOne("OrderDetails")
-                        .HasForeignKey("AppCore.Entities.OrderDetails", "OrderId")
+                        .HasForeignKey("Domain.Entities.OrderDetails", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Product", b =>
+            modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
-                    b.HasOne("AppCore.Entities.OrderDetails", null)
+                    b.HasOne("Domain.Entities.OrderDetails", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderDetailsId");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Reservation", b =>
+            modelBuilder.Entity("Domain.Entities.Reservation", b =>
                 {
-                    b.HasOne("AppCore.Entities.Customer", "Customer")
+                    b.HasOne("Domain.Entities.Customer", "Customer")
                         .WithMany("Reservations")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("AppCore.Entities.Order", "Order")
+                    b.HasOne("Domain.Entities.Order", "Order")
                         .WithOne("Reservation")
-                        .HasForeignKey("AppCore.Entities.Reservation", "OrderId")
+                        .HasForeignKey("Domain.Entities.Reservation", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppCore.Entities.Table", "Table")
+                    b.HasOne("Domain.Entities.Table", "Table")
                         .WithMany("Reservations")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("AppCore.ValueObjects.Date", "Date", b1 =>
+                    b.OwnsOne("Domain.ValueObjects.Date", "Date", b1 =>
                         {
                             b1.Property<int>("ReservationId")
                                 .ValueGeneratedOnAdd()

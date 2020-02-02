@@ -1,6 +1,5 @@
-﻿using AppCore.Common;
-using AppCore.Entities;
-using AppCore.Interfaces;
+﻿using Application.Common.Interfaces;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
