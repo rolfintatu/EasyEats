@@ -9,6 +9,9 @@ namespace Application.Common.Dtos
 {
     public class ProductDto : IMapFrom<Domain.Entities.Product>
     {
+
+        public ProductDto(){}
+
         public ProductDto(string name
             , decimal price
             , int quantity

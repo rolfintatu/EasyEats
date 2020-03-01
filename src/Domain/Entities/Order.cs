@@ -22,7 +22,6 @@ namespace Domain.Entities
         }
 
         public string Id { get; private set; }
-        //public int OrderId { get; set; }
         public DateTime Date { get; private set; }
 
         public string CustomerId { get; private set; }

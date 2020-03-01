@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Order.Commands;
+using Application.OrderItem.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,6 @@ namespace WebUi.Controllers
         public async Task<Unit> AddItems([FromQuery] int productId
             , [FromQuery] string orderId
             , [FromQuery] int quantity)
-            => await mediator.Send(new AddItemsCommand(productId, orderId, quantity));
+            => await mediator.Send(new AddItemCommand(orderId, productId, quantity));
     }
 }

@@ -14,14 +14,17 @@ namespace Application.OrderItem.Commands
         public AddItemCommand(
             string orderId
             , int itemId
+            , int quantity
             )
         {
             this.OrderId = orderId;
             this.ItemId = itemId;
+            Quantity = quantity;
         }
 
         public string OrderId { get; private set; }
         public int  ItemId { get; private set; }
+        public int Quantity { get; private set; }
     }
 
     public class AddItemCommandHandler : IRequestHandler<AddItemCommand>
@@ -46,7 +49,7 @@ namespace Application.OrderItem.Commands
                     .AddAsync(new Domain.Entities.OrderItems(
                         orderId: request.OrderId,
                         productId: request.ItemId,
-                        quantity: 1
+                        quantity: request.Quantity
                         ));
             }
             else
