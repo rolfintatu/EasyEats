@@ -7,6 +7,9 @@ namespace Domain.Enums
     public enum ReservationStatus
     {
         Expired,
-        Waiting
+        Waiting,
+        Canceled,
+        Approved,
+        New
     }
 }
