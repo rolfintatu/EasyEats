@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Data\20200115181135_TestSQLite.cs" />
     <Compile Remove="Data\20200115181135_TestSQLite.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200211172037_Order_ChangeIdDataType.cs" />
+    <Compile Remove="Data\Migrations\20200211172037_Order_ChangeIdDataType.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
