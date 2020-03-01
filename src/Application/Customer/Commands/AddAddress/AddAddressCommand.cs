@@ -52,7 +52,7 @@ namespace Application.Customer.Commands.AddAddress
             var customer = await context.Customers
                 .SingleOrDefaultAsync(x => x.Id == userService.UserId, cancellationToken);
 
-            customer.Address = mapper.Map<Address>(request);
+            customer.ChangeAddress(mapper.Map<Address>(request));
 
             await context.SaveChangesAsync(cancellationToken);
 

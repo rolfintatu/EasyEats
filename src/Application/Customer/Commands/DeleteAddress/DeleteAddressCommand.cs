@@ -30,7 +30,7 @@ namespace Application.Customer.Commands.DeleteAddress
             var customer = await context.Customers
                 .SingleOrDefaultAsync(x => x.Id == userService.UserId, cancellationToken);
 
-            customer.Address = null;
+            customer.ChangeAddress(null);
 
             await context.SaveChangesAsync(cancellationToken);
 

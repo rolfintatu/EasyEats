@@ -40,27 +40,19 @@ namespace Application.Reservation.Commands.CreateReservation
         public async Task<Unit> Handle(CreateReservationCom request, CancellationToken cancellationToken)
         {
 
-            var customer = await context.Customers
-                .SingleOrDefaultAsync(x => x.Id == userService.UserId, cancellationToken);
-
-            var table = await context.Tables
-                .SingleOrDefaultAsync(x => x.Id == request.TableId, cancellationToken);
-
-            if (customer == null || table == null)
+            if (userService.UserId == null)
             {
-                throw new NotFoundException(nameof(Entities.Reservation), request.TableId);
+                throw new ArgumentNullException(userService.UserId);
             }
 
-            await context.Reservations.AddAsync(new Entities.Reservation()
-            {
-                Date = request.Date,
-                Hour = request.Hour,
-                Duration = request.Duration,
-                CustomerId = customer.Id,
-                Customer = customer,
-                TableId = request.TableId,
-                Table = table
-            });
+            await context.Reservations.AddAsync(
+                new Entities.Reservation(
+                        request.Date,
+                        request.Hour,
+                        userService.UserId,
+                        request.TableId,
+                        request.Duration
+                    ));
 
             await context.SaveChangesAsync(cancellationToken);
 

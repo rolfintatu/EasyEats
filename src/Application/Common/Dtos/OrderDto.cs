@@ -1,5 +1,6 @@
 ﻿using Application.Common.Mapping;
 using AutoMapper;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,10 +10,21 @@ namespace Application.Common.Dtos
 {
     public class OrderDto : IMapFrom<Entities.Order>
     {
-        public int Id { get; private set; }
-        public DateTime Date { get; set; }
 
-        public Entities.OrderDetails OrderDetails { get; set; }
+        public OrderDto(){}
+
+        public OrderDto(
+            List<Entities.OrderItems> orderItems
+            )
+        {
+            this.OrderItems = orderItems;
+            this.Date = DateTime.UtcNow;
+        }
+
+        public int Id { get; private set; }
+        public DateTime Date { get; private set; } 
+
+        public List<Entities.OrderItems> OrderItems { get; private set; }
 
         public virtual void Mapping (Profile profile)
         {
@@ -22,6 +34,23 @@ namespace Application.Common.Dtos
 
     public class ComplexOrderDto : OrderDto
     {
+
+        public ComplexOrderDto(){}
+
+        public ComplexOrderDto(
+            string customerId
+            , CustomerDetailsDto customer
+            , Bill bill
+            , Entities.Reservation reservation
+            , List<Entities.OrderItems> orderItems)
+            :base(orderItems)
+        {
+            CustomerId = customerId;
+            Customer = customer;
+            Bill = bill;
+            Reservation = reservation;
+        }
+
         public string CustomerId { get; set; }
         public CustomerDetailsDto Customer { get; set; }
 

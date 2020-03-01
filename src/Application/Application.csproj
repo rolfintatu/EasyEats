@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Models\" />
+    <Folder Include="OrderItem\Queries\" />
     <Folder Include="Reservation\Queries\ReservationsByTable\" />
     <Folder Include="Reservation\Queries\ReservationsByUser\" />
   </ItemGroup>
@@ -31,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 

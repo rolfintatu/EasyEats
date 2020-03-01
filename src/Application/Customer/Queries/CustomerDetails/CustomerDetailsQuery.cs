@@ -37,8 +37,9 @@ namespace Application.Customer.Queries.CustomerDetails
         public async Task<CustomerDetailsDto> Handle(CustomerDetailsQuery request, CancellationToken cancellationToken)
         {
 
-            var result = await context.Customers.Where(x => x.Id == request.UserId)
-                .FirstOrDefaultAsync();
+            var result = await context.Customers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == request.UserId);
 
             var customer = mapper.Map<CustomerDetailsDto>(result);
 

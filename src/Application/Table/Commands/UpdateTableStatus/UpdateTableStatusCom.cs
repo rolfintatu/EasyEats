@@ -29,14 +29,15 @@ namespace Application.Table.Commands.UpdateTableStatus
         public async Task<Unit> Handle(UpdateTableStatusCom request, CancellationToken cancellationToken)
         {
 
-            var table = await context.Tables.SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var table = await context.Tables
+                .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (table == null)
             {
                 throw new NotFoundException(nameof(Table), request.Id);
             }
 
-            table.Status = request.Status;
+            table.ChangeStatus(request.Status);
 
             await context.SaveChangesAsync(cancellationToken);
 

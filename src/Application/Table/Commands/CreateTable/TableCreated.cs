@@ -20,6 +20,7 @@ namespace Application.Table.Commands.CreateTable
         {
             this.notificationService = notificationService;
         }
+
         public async Task Handle(TableCreated notification, CancellationToken cancellationToken)
         {
 

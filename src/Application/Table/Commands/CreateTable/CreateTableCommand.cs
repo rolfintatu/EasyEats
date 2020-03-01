@@ -30,11 +30,9 @@ namespace Application.Table.Commands.CreateTable
 
         public async Task<Unit> Handle(CreateTableCommand request, CancellationToken cancellationToken)
         {
-            await context.Tables.AddAsync(new Entities.Table()
-            {
-                ChairsCount = request.ChairsCount,
-                Status = request.Status
-            });
+            await context.Tables.AddAsync(new Entities.Table(
+                tableStatus: request.Status
+                ,chairsCount: request.ChairsCount));
 
             await context.SaveChangesAsync(cancellationToken);
 
