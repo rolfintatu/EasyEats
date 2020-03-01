@@ -9,7 +9,7 @@ namespace Application.Common.Interfaces
     {
         DbSet<Entities.Customer> Customers { get; set; }
         DbSet<Entities.Order> Orders { get; set; }
-        DbSet<Entities.OrderDetails> OrderDetails { get; set; }
+        DbSet<Entities.OrderItems> OrderItems { get; set; }
         DbSet<Entities.Product> Products { get; set; }
         DbSet<Entities.Bill> Bills { get; set; }
         DbSet<Entities.Reservation> Reservations { get; set; }
