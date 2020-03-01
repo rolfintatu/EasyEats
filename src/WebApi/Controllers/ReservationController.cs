@@ -49,7 +49,7 @@ namespace WebUi.Controllers
         public async Task<IActionResult> Delete(int id)
         {
 
-            await mediator.Send(new DeleteReservationCom() { Id = id });
+            await mediator.Send(new CancelReservationCom() { Id = id });
 
             return Ok();
         }

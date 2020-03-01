@@ -5,12 +5,12 @@ using FluentValidation;
 
 namespace Application.Reservation.Commands.DeleteReservation
 {
-    public class DeleteReservationValidator : AbstractValidator<DeleteReservationCom>
+    public class CancelReservationValidator : AbstractValidator<CancelReservationCom>
     {
-        public DeleteReservationValidator()
+        public CancelReservationValidator()
         {
             RuleFor(x => x.Id)
-                .LessThanOrEqualTo(0);
+                .NotEqual(0);
         }
     }
 }
