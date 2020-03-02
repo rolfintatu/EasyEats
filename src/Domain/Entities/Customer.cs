@@ -7,9 +7,26 @@ namespace Domain.Entities
 {
     public class Customer
     {
+
         public Customer()
         {
             this.Reservations = new List<Reservation>();
+        }
+
+        public Customer(
+            string id
+            , string name
+            , int phone
+            , Address address
+            , List<Reservation> reservations
+            , List<Order> orders)
+        {
+            Id = id;
+            Name = name;
+            Phone = phone;
+            Address = address;
+            Reservations = reservations;
+            Orders = orders;
         }
 
         public string Id { get; set; }

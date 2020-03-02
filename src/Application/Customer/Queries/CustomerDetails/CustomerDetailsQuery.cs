@@ -15,6 +15,11 @@ namespace Application.Customer.Queries.CustomerDetails
 {
     public class CustomerDetailsQuery : IRequest<CustomerDetailsDto>
     {
+        public CustomerDetailsQuery(string userId)
+        {
+            UserId = userId;
+        }
+
         public string UserId { get; set; }
     }
 
@@ -38,12 +43,9 @@ namespace Application.Customer.Queries.CustomerDetails
         {
 
             var result = await context.Customers
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.UserId);
+                .FindAsync(request.UserId);
 
-            var customer = mapper.Map<CustomerDetailsDto>(result);
-
-            return mapper.Map<CustomerDetailsDto>(customer);
+            return mapper.Map<CustomerDetailsDto>(result);
 
         }
     }
