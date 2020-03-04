@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Domain.Exceptions;
+using Application.Common.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

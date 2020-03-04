@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Domain.Exceptions;
+using Application.Common.Exceptions;
 
 namespace Application.Table.Commands.UpdateTableStatus
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Exceptions
+namespace Exceptions
 {
     public class NotValidNumber : Exception
     {

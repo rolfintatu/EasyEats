@@ -1,8 +1,8 @@
 ﻿using Domain.Enums;
-using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Exceptions;
 
 namespace Domain.Entities
 {

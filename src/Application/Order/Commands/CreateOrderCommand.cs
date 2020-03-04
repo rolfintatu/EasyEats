@@ -7,7 +7,7 @@ using Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Common;
-using Domain.Exceptions;
+using Application.Common.Exceptions;
 
 namespace Application.Order.Commands
 {
@@ -27,7 +27,6 @@ namespace Application.Order.Commands
             )
             :this(reservationId)
         {
-            this.ReservationId = reservationId;
             this.UserId = userId;
         }
 
