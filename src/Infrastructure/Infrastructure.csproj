@@ -9,6 +9,8 @@
     <Compile Remove="Data\20200115181135_TestSQLite.Designer.cs" />
     <Compile Remove="Data\Migrations\20200211172037_Order_ChangeIdDataType.cs" />
     <Compile Remove="Data\Migrations\20200211172037_Order_ChangeIdDataType.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200304094120_DataBase_AddAuditForEachEntity.cs" />
+    <Compile Remove="Data\Migrations\20200304094120_DataBase_AddAuditForEachEntity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Infrastructure.Data;
 using Application.Common.Interfaces;
 using Infrastructure.Identity;
+using Infrastructure.Services;
 
 namespace Infrastructure
 {
@@ -36,6 +37,7 @@ namespace Infrastructure
             services.AddTransient<IEasyEatsDbContext, EasyEatsDbContext>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddScoped<IEasyEatsDbContext>(x => x.GetService<EasyEatsDbContext>());
+            services.AddScoped<IDateTime, DateTimeService>();
 
         }
     }

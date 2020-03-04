@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -15,11 +16,15 @@ namespace Infrastructure.Data
     public class EasyEatsDbContext : DbContext, IEasyEatsDbContext
     {
         private readonly ICurrentUserService currentUser;
+        private readonly IDateTime dateTime;
 
-        public EasyEatsDbContext(DbContextOptions options, ICurrentUserService currentUser) 
+        public EasyEatsDbContext(DbContextOptions options
+            , ICurrentUserService currentUser
+            , IDateTime dateTime) 
             : base(options)
         {
             this.currentUser = currentUser;
+            this.dateTime = dateTime;
         }
 
         public DbSet<OrderItems> OrderItems { get; set; }
@@ -42,17 +47,17 @@ namespace Infrastructure.Data
 
             var context = ChangeTracker.Context;
 
-            foreach (var entry in context.ChangeTracker.Entries().ToList())
+            foreach (var entry in context.ChangeTracker.Entries<AuditableEntity>().ToList())
             {
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        //entry.Entity.CreatedBy = currentUser.UserId;
-                        //entry.Entity.Created = DateTime.Now;
+                        entry.Entity.CreatedBy = currentUser.UserId ?? "NewUser";
+                        entry.Entity.Created = dateTime.UtcNow;
                         break;
                     case EntityState.Modified:
-                        //entry.Entity.LastModifiedBy = currentUser.UserId;
-                        //entry.Entity.LastModified = DateTime.Now;
+                        entry.Entity.LastModifiedBy = currentUser.UserId ?? "NewUser";
+                        entry.Entity.LastModified = dateTime.UtcNow;
                         break;
                     default:
                         break;

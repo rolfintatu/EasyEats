@@ -1,11 +1,12 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Common;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Domain.Entities
 {
-    public class Customer
+    public class Customer : AuditableEntity
     {
 
         public Customer()

@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Domain.Common;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ namespace Domain.Entities
 {
 
     //TODO: Implement discount for a period of time
-    public class Product
+    public class Product : AuditableEntity
     {
         public Product()
         {

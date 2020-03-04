@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Domain.Entities
 {
-    public class Bill
+    public class Bill : AuditableEntity
     {
-        public Bill()
-        {
-
-        }
+        public Bill(){}
 
         public Bill(string orderId)
         {

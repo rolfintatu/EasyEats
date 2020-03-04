@@ -3,10 +3,11 @@ using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Reservation
+    public class Reservation : AuditableEntity
     {
 
         public Reservation()

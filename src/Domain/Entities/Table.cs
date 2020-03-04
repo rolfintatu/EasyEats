@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Exceptions;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Table
+    public class Table : AuditableEntity
     {
         public Table()
         {

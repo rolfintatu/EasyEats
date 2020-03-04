@@ -15,6 +15,10 @@ namespace Infrastructure.Data.Configurations
             builder.Property(x => x.Id)
                 .UseIdentityColumn(1, 1);
 
+            builder.Property(x => x.SubTotal)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
             builder.Property(x => x.Total)
                 .HasColumnType("decimal(18,2)")
                 .HasDefaultValue(0);
