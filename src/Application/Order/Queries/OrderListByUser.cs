@@ -23,11 +23,6 @@ namespace Application.Order.Queries
         {
             this.Date = date;
             this.UserName = UserName;
-
-            if (date is null)
-            {
-                this.Date.ConvertFrom(DateTime.UtcNow);
-            }
         }
 
         public Date Date { get; }
@@ -53,22 +48,30 @@ namespace Application.Order.Queries
         private readonly IEasyEatsDbContext context;
         private readonly ICurrentUserService userService;
         private readonly IMapper mapper;
+        private readonly IDateTime dateTime;
 
         public OrderListByUHandler(
               IEasyEatsDbContext context
             , ICurrentUserService userService
             , IMapper mapper
+            , IDateTime dateTime
             )
         {
             this.context = context;
             this.userService = userService;
             this.mapper = mapper;
+            this.dateTime = dateTime;
         }
 
         public async Task<OrderListByUResponse> Handle(OrderListByUser request, CancellationToken cancellationToken)
         {
 
             var response = new OrderListByUResponse();
+
+            if (request.Date is null)
+            {
+                request.Date.ConvertFrom(dateTime.UtcNow);
+            }
 
             if (
                 !string.IsNullOrEmpty(request.UserName)

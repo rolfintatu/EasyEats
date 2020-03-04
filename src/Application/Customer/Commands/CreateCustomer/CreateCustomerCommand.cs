@@ -11,7 +11,14 @@ namespace Application.Customer.Commands.CreateCustomer
 {
     public class CreateCustomerCommand : IRequest
     {
-        public CreateCustomerCommand(string id, string name, string numberPhone)
+        public CreateCustomerCommand()
+        {
+        }
+
+        public CreateCustomerCommand(
+            string id
+            , string name
+            , string numberPhone)
         {
             Id = id;
             Name = name;

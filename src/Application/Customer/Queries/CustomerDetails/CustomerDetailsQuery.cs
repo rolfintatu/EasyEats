@@ -15,6 +15,10 @@ namespace Application.Customer.Queries.CustomerDetails
 {
     public class CustomerDetailsQuery : IRequest<CustomerDetailsDto>
     {
+        public CustomerDetailsQuery()
+        {
+        }
+
         public CustomerDetailsQuery(string userId)
         {
             UserId = userId;

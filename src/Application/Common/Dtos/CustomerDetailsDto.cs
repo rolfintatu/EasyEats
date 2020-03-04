@@ -10,6 +10,9 @@ namespace Application.Common.Dtos
 {
     public class CustomerDetailsDto : IMapFrom<Entities.Customer>
     {
+
+        public CustomerDetailsDto(){}
+
         public CustomerDetailsDto(string name, int phone, Address address)
         {
             Name = name;
@@ -29,6 +32,9 @@ namespace Application.Common.Dtos
 
     public class ComplexCustomerDto : CustomerDetailsDto
     {
+
+        public ComplexCustomerDto() { }
+
         public ComplexCustomerDto(List<MixReservationDto> reservations, List<OrderDto> orders
             , string name, int phone, Address address)
             :base(name,phone,address)

@@ -15,10 +15,11 @@ namespace Application.Common.Dtos
 
         public OrderDto(
             List<Entities.OrderItems> orderItems
+            ,DateTime dateTime
             )
         {
             this.OrderItems = orderItems;
-            this.Date = DateTime.UtcNow;
+            this.Date = dateTime;
         }
 
         public int Id { get; private set; }
@@ -42,8 +43,9 @@ namespace Application.Common.Dtos
             , CustomerDetailsDto customer
             , Bill bill
             , Entities.Reservation reservation
+            , DateTime dateTime
             , List<Entities.OrderItems> orderItems)
-            :base(orderItems)
+            :base(orderItems, dateTime)
         {
             CustomerId = customerId;
             Customer = customer;
