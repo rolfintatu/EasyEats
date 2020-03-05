@@ -2,26 +2,39 @@
 using Application.Common.Interfaces;
 using Application.Customer.Commands.CreateCustomer;
 using Application.Customer.Queries.CustomerDetails;
+using Application.Test.Common;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using MockQueryable.Moq;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Entities = Domain.Entities;
+using Moq.EntityFrameworkCore;
+using Moq.EntityFrameworkCore.DbAsyncQueryProvider;
+using Application.Common.Mapping;
 
 namespace Application.Test.Customer
 {
+
     public class CustomerTest
     {
 
-        private Mock<IMediator> mediatR = new Mock<IMediator>();
+        
+
+        private Mock<IMediator> _mediatR = new Mock<IMediator>();
+        private Mock<IEasyEatsDbContext> _context = new Mock<IEasyEatsDbContext>();
+        private IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
+        private Mock<ICurrentUserService> _userService = new Mock<ICurrentUserService>();
 
         [Fact]
         public async void CreateCustomer_Test()
@@ -33,121 +46,48 @@ namespace Application.Test.Customer
                 numberPhone: "1459832443"
                 );
 
-            var createCustomer = new Entities.Customer(
-                id: Guid.NewGuid().ToString(),
-                name: "Florin",
-                phone: 1459832443,
-                null,
-                null,
-                null
-                );
+            _context.Setup(x => x.Customers.AddAsync( It.IsAny<Entities.Customer>(), It.IsAny<CancellationToken>()));
 
-            var mediatR = new Mock<IMediator>();
-            var _context = new Mock<IEasyEatsDbContext>();
+            var CreateCustomerHandler = new CreateCustomerHandler(_context.Object, _mediatR.Object);
 
-            mediatR.Setup(x => x.Send(It.IsAny<CreateCustomerCommand>(), default(CancellationToken)))
-            .Returns(Task.FromResult(default(Unit)));
+            await CreateCustomerHandler.Handle(requestCustomer, new CancellationToken());
 
-            _context.Verify(x => x.Customers.Add(createCustomer), Times.Once);
+            _context.Verify(x => x.Customers.AddAsync(It.IsAny<Entities.Customer>(), It.IsAny<CancellationToken>()), Times.Exactly(1));
 
-            var CreateCustomerHandler = new CreateCustomerHandler(_context.Object, mediatR.Object);
-
-            var actual = await CreateCustomerHandler.Handle(requestCustomer, new CancellationToken());
-
+            _context.Verify(x => x.SaveChangesAsync(default(CancellationToken)), Times.Exactly(1));
         }
 
         [Fact]
         public async void GetUserDetails_Test()
         {
 
-            var input = new CustomerDetailsQuery("TestID");
 
-            var mok = new Entities.Customer("TestID", "Florin", 0, null, null, null);
-
-            var output = new CustomerDetailsDto(
-
-                name: "Florin",
-                phone: 0762946283,
-                address: new Domain.ValueObjects.Address(
-                        country: "Romania",
-                        city: "Buzau",
-                        addressLine: "Com. Valcelele",
-                        postalCode: 123452
-                    )
-            );
-
-            var _context = new Mock<IEasyEatsDbContext>();
-            var mapper = new Mock<IMapper>();
-            var userService = new Mock<ICurrentUserService>();
-
-
-            mediatR.Setup(x => x.Send(It.IsAny<CustomerDetailsQuery>(), default(CancellationToken)))
-                .Returns(Task.FromResult(output));
-
-
-            _context.Setup(x => x.Customers.FindAsync(It.IsAny<string>()))
-                .ReturnsAsync(mok);
-
-            mapper.Setup(x => x.Map<CustomerDetailsDto>(It.IsAny<Entities.Customer>()))
-                .Returns(output);
-
-            var customerDetailsHandler = new CustomerDetailsHandler(_context.Object, userService.Object, mapper.Object);
-
-            var actual = await customerDetailsHandler.Handle(input, new CancellationToken());
-
-            Assert.True(actual != null);
-            Assert.Equal(output.Name, actual.Name);
-
-        }
-
-        public List<Entities.Customer> GetSampleCustomers()
-        {
-            var output = new List<Entities.Customer>()
+            var usersList = new List<Entities.Customer>()
             {
-                new Entities.Customer(
-                    id: Guid.NewGuid().ToString(),
-                    name: "Florin",
-                    phone: 0762946283,
-                    address: new Domain.ValueObjects.Address(
-                            country: "Romania",
-                            city: "Buzau",
-                            addressLine: "Com. Valcelele",
-                            postalCode: 123452
-                        ),
-                    reservations: new List<Entities.Reservation>(),
-                    orders: new List<Entities.Order>()
-                    ),
-
-                 new Entities.Customer(
-                    id: Guid.NewGuid().ToString(),
-                    name: "Geo",
-                    phone: 0762946283,
-                    address: new Domain.ValueObjects.Address(
-                            country: "Romania",
-                            city: "Buzau",
-                            addressLine: "Com. Valcelele",
-                            postalCode: 123452
-                        ),
-                    reservations: new List<Entities.Reservation>(),
-                    orders: new List<Entities.Order>()
-                    ),
-
-                  new Entities.Customer(
-                    id: Guid.NewGuid().ToString(),
-                    name: "Cata",
-                    phone: 0762946283,
-                    address: new Domain.ValueObjects.Address(
-                            country: "Romania",
-                            city: "Buzau",
-                            addressLine: "Com. Valcelele",
-                            postalCode: 123452
-                        ),
-                    reservations: new List<Entities.Reservation>(),
-                    orders: new List<Entities.Order>()
-                    ),
+                new Entities.Customer("TestID", "Florin", 30, null, null, null),
+                new Entities.Customer("TestID1", "George", 0, null, null, null),
+                new Entities.Customer("TestID2", "Ion", 0, null, null, null)
             };
 
-            return output;
+            var expected = new Entities.Customer("TestID", "Florin", 30, null, null, null);
+
+            var _mockSet = TestHelper.TestAsyncQueryble<Entities.Customer>(usersList.AsQueryable());
+
+            _userService.Setup(x => x.UserId)
+                .Returns(expected.Id);
+
+            _context.Setup(x => x.Customers)
+                .Returns(_mockSet.Object);
+
+
+            var customerDetailsHandler = new CustomerDetailsHandler(_context.Object, _userService.Object, mapper);
+
+            var actual = await customerDetailsHandler.Handle(new CustomerDetailsQuery(expected.Id), default(CancellationToken));
+
+            Assert.True(actual != null);
+            Assert.Equal(expected.Name, actual.Name);
+
         }
+
     }
 }
