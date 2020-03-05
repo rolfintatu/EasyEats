@@ -2,7 +2,6 @@
 using Application.Common.Interfaces;
 using Application.Customer.Commands.CreateCustomer;
 using Application.Customer.Queries.CustomerDetails;
-using Application.Test.Common;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -71,7 +70,7 @@ namespace Application.Test.Customer
 
             var expected = new Entities.Customer("TestID", "Florin", 30, null, null, null);
 
-            var _mockSet = TestHelper.TestAsyncQueryble<Entities.Customer>(usersList.AsQueryable());
+            var _mockSet = usersList.AsQueryable().BuildMockDbSet();
 
             _userService.Setup(x => x.UserId)
                 .Returns(expected.Id);

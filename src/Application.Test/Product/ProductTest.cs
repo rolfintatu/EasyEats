@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Application.Product.Queries;
-using Application.Test.Common;
 using Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +49,7 @@ namespace Application.Test.Product
                    Domain.Enums.PriceFilter.Ascending
                    , Domain.Enums.Category.Drink, 1);
 
-            var mockSet = TestHelper.TestAsyncQueryble<Entities.Product>(products.AsQueryable());
+            var mockSet = products.AsQueryable().BuildMockDbSet();
 
             _mokContext
                 .SetupSequence(x => x.Products)
