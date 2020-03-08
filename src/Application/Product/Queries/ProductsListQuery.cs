@@ -24,16 +24,40 @@ namespace Application.Product.Queries
             Category = category;
         }
 
+        public ProductsListQuery(
+            PriceFilter priceFilter
+            , Category category
+            , int page) 
+            : this(priceFilter, category)
+        {
+            Page = page;
+        }
+
         public PriceFilter PriceFilter { get; } = PriceFilter.Ascending;
         public Category Category { get; }
+
+        public int Page { get; }
+
+
     }
 
     public class ProductsListResponse
     {
-        public ProductsListResponse()
-        {
 
+        public const int ResultsOnPage = 10;
+
+        public ProductsListResponse(List<Domain.Entities.Product> products
+            , int page
+            , int totalPages
+            , int totalResults)
+            : this(products)
+        {
+            Page = page;
+            TotalPages = totalPages;
+            TotalResults = totalResults;
         }
+
+        public ProductsListResponse(){}
         public ProductsListResponse(
             List<Domain.Entities.Product> products
             )
@@ -41,7 +65,12 @@ namespace Application.Product.Queries
             Products = products;
         }
 
-        public List<Domain.Entities.Product> Products { get; }
+        public List<Domain.Entities.Product> Products { get; } = new List<Domain.Entities.Product>(ResultsOnPage);
+
+
+        public int Page { get; set; }
+        public int TotalPages { get; set; }
+        public int TotalResults { get; set; }
     }
 
     public class ProductsListHandler : IRequestHandler<ProductsListQuery, ProductsListResponse>
@@ -90,7 +119,7 @@ namespace Application.Product.Queries
                     {
                         case PriceFilter.Ascending:
                             productsList = new ProductsListResponse(
-                                await context.Products.AsNoTracking()
+                                 await context.Products.AsNoTracking()
                                 .Where(x => x.Category == Category.Drink)
                                 .OrderBy(x => x.Price).ToListAsync());
                             break;
@@ -112,7 +141,32 @@ namespace Application.Product.Queries
                     break;
             }
 
-            return productsList;
+            var resultsOnPage = ProductsListResponse.ResultsOnPage;
+            var pages = productsList.Products.Count() / ProductsListResponse.ResultsOnPage;
+
+            if (productsList.Products.Count() % ProductsListResponse.ResultsOnPage != 0)
+            {
+                pages += 1;
+            }
+
+            if (request.Page == pages)
+            {
+                resultsOnPage = productsList.Products.Count() % ProductsListResponse.ResultsOnPage;
+            }
+
+
+
+            var result = new ProductsListResponse(
+                products: productsList.Products.GetRange(
+                    (request.Page - 1) * ProductsListResponse.ResultsOnPage
+                    , resultsOnPage
+                    ),
+                page: request.Page,
+                totalPages: pages,
+                totalResults: productsList.Products.Count()
+                );
+
+            return result;
         }
     }
 }
