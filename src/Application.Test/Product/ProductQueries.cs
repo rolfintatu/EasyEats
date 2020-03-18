@@ -20,7 +20,7 @@ using Entities = Domain.Entities;
 
 namespace Application.Test.Product
 {
-    public class ProductTest
+    public class ProductQueries
     {
         private Mock<IMediator> _mokMediator = new Mock<IMediator>();
         private Mock<IEasyEatsDbContext> _mokContext = new Mock<IEasyEatsDbContext>();
