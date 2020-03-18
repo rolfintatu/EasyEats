@@ -10,25 +10,12 @@ namespace Domain.Entities
     {
 
         public Customer()
-        {
-            this.Reservations = new List<Reservation>();
-        }
+            => (Reservations) = (new List<Reservation>());
 
-        public Customer(
-            string id
-            , string name
-            , int phone
-            , Address address
-            , List<Reservation> reservations
-            , List<Order> orders)
-        {
-            Id = id;
-            Name = name;
-            Phone = phone;
-            Address = address;
-            Reservations = reservations;
-            Orders = orders;
-        }
+        public Customer(string id, string name, int phone
+            , Address address, List<Reservation> reservations, List<Order> orders)
+            => (Id, Name, Phone, Address, Reservations, Orders)
+            = (id, name, phone, address, reservations, orders);
 
         public string Id { get; set; }
         public string Name { get; set; }
@@ -39,8 +26,6 @@ namespace Domain.Entities
         public List<Order> Orders { get; set; }
 
         public void ChangeAddress(Address newAddress)
-        {
-            this.Address = newAddress;
-        }
+            => this.Address = newAddress;
     }
 }

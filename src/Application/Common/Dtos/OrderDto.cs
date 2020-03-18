@@ -15,12 +15,9 @@ namespace Application.Common.Dtos
 
         public OrderDto(
             List<Entities.OrderItems> orderItems
-            ,DateTime dateTime
+            , DateTime dateTime
             )
-        {
-            this.OrderItems = orderItems;
-            this.Date = dateTime;
-        }
+            => (this.OrderItems, this.Date) = (orderItems, dateTime);
 
         public int Id { get; private set; }
         public DateTime Date { get; private set; } 
@@ -41,17 +38,12 @@ namespace Application.Common.Dtos
         public ComplexOrderDto(
             string customerId
             , CustomerDetailsDto customer
-            , Bill bill
+            , Entities.Bill bill
             , Entities.Reservation reservation
             , DateTime dateTime
             , List<Entities.OrderItems> orderItems)
-            :base(orderItems, dateTime)
-        {
-            CustomerId = customerId;
-            Customer = customer;
-            Bill = bill;
-            Reservation = reservation;
-        }
+            : base(orderItems, dateTime) =>
+            (CustomerId, Customer, Bill, Reservation) = (customerId, customer, bill, reservation);
 
         public string CustomerId { get; set; }
         public CustomerDetailsDto Customer { get; set; }

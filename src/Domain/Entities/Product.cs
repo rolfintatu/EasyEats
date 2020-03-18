@@ -10,24 +10,17 @@ namespace Domain.Entities
     //TODO: Implement discount for a period of time
     public class Product : AuditableEntity
     {
-        public Product()
-        {
+        public Product(){}
 
-        }
+        public Product(string name, decimal price, int quantity, Category category
+            , int calories, string description) 
+            => (Name, Price, Quantity, Category, Calories, Description) 
+            = (name, price, quantity, category, calories, description);
 
-        public Product(string name
-            ,decimal price
-            ,int quantity
-            ,Category category
-            ,int calories
-            ,string description)
-        {
-            this.Name = name;
-            this.Price = price;
-            this.Category = category;
-            this.Calories = calories;
-            this.Description = description;
-        }
+        public Product(int id, string name, decimal price, int quantity, Category category
+            , int calories, string description)
+            : this(name, price, quantity, category, calories, description)
+            => (this.Id) = (id);
 
         public int Id { get; private set; }
         public string Name { get; private set; }
@@ -40,10 +33,9 @@ namespace Domain.Entities
 
         public List<OrderItems> OrderProducts { get; set; }
 
-        public  void IncreaseQuantity(int quantity)
+        public void IncreaseQuantity(int quantity)
         {
             this.Quantity += quantity;
-
             if (OutOfStock is true)
             {
                 this.OutOfStock = false;
@@ -56,18 +48,11 @@ namespace Domain.Entities
             {
                 throw new Exception($"Cant buy more then {this.Quantity} products.");
             }
-
             this.Quantity -= quantity;
-
-            if (this.Quantity is 0)
-            {
-                this.OutOfStock = true;
-            }
+            _ = this.Quantity is 0 ? this.OutOfStock = true : this.OutOfStock = false;
         }
 
         public void ChangePrice(decimal newPrice)
-        {
-            this.Price = newPrice;
-        }
+            => this.Price = newPrice;
     }
 }

@@ -13,12 +13,9 @@ namespace Application.Common.Dtos
 
         public CustomerDetailsDto(){}
 
-        public CustomerDetailsDto(string name, int phone, Address address)
-        {
-            Name = name;
-            Phone = phone;
-            Address = address;
-        }
+        public CustomerDetailsDto(string name, int phone, Address address) =>
+            (this.Name, this.Phone, this.Address) =(name, phone, address);
+
 
         public string Name { get; set; }
         public int Phone { get; set; }
@@ -37,11 +34,8 @@ namespace Application.Common.Dtos
 
         public ComplexCustomerDto(List<MixReservationDto> reservations, List<OrderDto> orders
             , string name, int phone, Address address)
-            :base(name,phone,address)
-        {
-            Reservations = reservations;
-            Orders = orders;
-        }
+            : base(name, phone, address) =>
+            (this.Reservations, this.Orders) = (reservations, orders);
 
         public List<MixReservationDto> Reservations { get; set; }
         public List<OrderDto> Orders { get; set; }

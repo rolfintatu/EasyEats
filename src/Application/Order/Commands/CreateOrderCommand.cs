@@ -15,21 +15,12 @@ namespace Application.Order.Commands
     public class CreateOrderCommand : IRequest
     {
 
-        public CreateOrderCommand(
-            int reservationId
-            )
-        {
-            this.ReservationId = reservationId;
-        }
+        public CreateOrderCommand(int reservationId)
+            => (ReservationId) = (reservationId);
 
-        public CreateOrderCommand(
-            int reservationId
-            , string userId
-            )
-            :this(reservationId)
-        {
-            this.UserId = userId;
-        }
+        public CreateOrderCommand(int reservationId, string userId)
+            : this(reservationId)
+            => (UserId) = (userId);
 
         public string UserId { get; private set; }
         public int ReservationId { get; private set; }
@@ -39,16 +30,11 @@ namespace Application.Order.Commands
     {
         private readonly IEasyEatsDbContext context;
 
-        public CreateOrderHandler(
-            IEasyEatsDbContext context
-            )
-        {
-            this.context = context;
-        }
+        public CreateOrderHandler(IEasyEatsDbContext context)
+            => (this.context) = (context);
 
         public async Task<Unit> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-
 
             if (!string.IsNullOrEmpty(request.UserId))
             {

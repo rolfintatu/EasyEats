@@ -10,34 +10,20 @@ namespace Domain.Entities
     public class Table : AuditableEntity
     {
         public Table()
-        {
-            this.Reservations = new List<Reservation>();
-        }
-
+        : this(new List<Reservation>()) {}
+        
         public Table(List<Reservation> reservationsList)
-        {
-            this.Reservations = reservationsList;
-        }
+            => (Reservations) = (reservationsList);
 
-        public Table(int chairsCount
-            ,TableStatus tableStatus)
-        {
-            this.ChairsCount = chairsCount;
-            this.Status = tableStatus;
+        public Table(int chairsCount, TableStatus tableStatus)
+            : this(new List<Reservation>())
+            => (ChairsCount, Status) = (chairsCount, tableStatus);
 
-            this.Reservations = new List<Reservation>();
-        }
+        public Table(List<Reservation> reservations, int chairsCount, TableStatus tableStatus)
+            : this(reservations)
+            => (ChairsCount, Status) = (chairsCount, tableStatus);
 
-        public Table(List<Reservation> reservations
-            ,int chairsCount
-            , TableStatus tableStatus)
-        {
-            this.ChairsCount = chairsCount;
-            this.Status = tableStatus;
-            this.Reservations = reservations;
-        }
-
-        private const int MaxChairs = 4;
+        public const int MaxChairs = 4;
 
         public int Id { get; private set; }
 
@@ -62,30 +48,23 @@ namespace Domain.Entities
         /// <param name="numberOfChairs"> The value must be smaller then 5 and not smaller then 1. </param>
         public Table NumberOfChairs(int numberOfChairs)
         {
-            switch (numberOfChairs)
+            _ = numberOfChairs switch
             {
-                case 0:
-                    throw new NotValidNumber(nameof(this.ChairsCount), numberOfChairs);
-                case 5:
-                    throw new NotValidNumber(nameof(this.ChairsCount), numberOfChairs, MaxChairs);
-                default:
-                    this.ChairsCount = numberOfChairs;
-                    break;
-            }
+                0 => throw new NotValidNumber(nameof(this.ChairsCount), numberOfChairs),
+                5 => throw new NotValidNumber(nameof(this.ChairsCount), numberOfChairs, MaxChairs),
+                _ => ChairsCount = numberOfChairs
+            };
 
             return this;
-
         }
 
         /// <summary>
         /// Change table status.
         /// </summary>
-        /// <param name="status"> For define status for a table you can use TableStatus enum. </param>
+        /// <param name="status"> "TableStatus" is an enum.</param>
         /// <returns></returns>
-        public Table ChangeStatus(TableStatus status)
-        {
-            this.Status = status;
-            return this;
-        }
+        public void ChangeStatus(TableStatus status)
+            => this.Status = status;
+         
     }
 }

@@ -15,14 +15,10 @@ namespace Application.Customer.Queries.CustomerDetails
 {
     public class CustomerDetailsQuery : IRequest<CustomerDetailsDto>
     {
-        public CustomerDetailsQuery()
-        {
-        }
+        public CustomerDetailsQuery() { }
 
         public CustomerDetailsQuery(string userId)
-        {
-            UserId = userId;
-        }
+            => (UserId) = (userId);
 
         public string UserId { get; set; }
     }
@@ -34,23 +30,17 @@ namespace Application.Customer.Queries.CustomerDetails
         private readonly IMapper mapper;
 
         public CustomerDetailsHandler(IEasyEatsDbContext context
-            ,ICurrentUserService currentUser
-            ,IMapper mapper)
-        {
-            this.context = context;
-            this.currentUser = currentUser;
-            this.mapper = mapper;
-        }
-
+            , ICurrentUserService currentUser, IMapper mapper)
+            => (this.context, this.currentUser, this.mapper)
+            = (context, currentUser, mapper);
 
         public async Task<CustomerDetailsDto> Handle(CustomerDetailsQuery request, CancellationToken cancellationToken)
         {
-
             var result = await context.Customers
-                .FindAsync(request.UserId);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == currentUser.UserId);
 
             return mapper.Map<CustomerDetailsDto>(result);
-
         }
     }
 }

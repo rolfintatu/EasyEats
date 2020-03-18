@@ -25,7 +25,6 @@ namespace WebUi
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddTransient<ICurrentUserService, CurrentUserService>();
 
             services.AddControllers();
@@ -72,7 +71,7 @@ namespace WebUi
                         Description = "Please enter into field the word 'Bearer' following by space and JWT",
                         Name = "Authorization",
                         Type = SecuritySchemeType.ApiKey,
-                    
+
                     });
 
                 x.AddSecurityRequirement(
@@ -97,6 +96,12 @@ namespace WebUi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyEatsV1");
+                });
             }
             else
             {
@@ -106,9 +111,6 @@ namespace WebUi
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "Easy Eats Api v1"));
 
             app.UseRouting();
 

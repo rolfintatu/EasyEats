@@ -18,14 +18,9 @@ namespace Application.Common.Dtos
             , Category category
             , int calories
             , string description
-            )
-        {
-            this.Name = name;
-            this.Price = price;
-            this.Category = category;
-            this.Calories = calories;
-            this.Description = description;
-        }
+            ) =>
+            (Name, Price, Quantity, Category, Calories, Description) =
+            (name, price, quantity, category, calories, description);
 
         public string Name { get; private set; }
         public decimal Price { get; private set; }

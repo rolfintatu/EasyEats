@@ -11,6 +11,11 @@ namespace Application.Common.Dtos
     public class TableDetailsDto : IMapFrom<Entities.Table>
     {
 
+        public TableDetailsDto() { }
+
+        public TableDetailsDto(int tableNumber, int chairCount) 
+            => (this.TableNumber, this.ChairsCount) = (tableNumber, chairCount);
+
         public int TableNumber { get; set; }
         public int ChairsCount { get; set; }
 
@@ -26,6 +31,12 @@ namespace Application.Common.Dtos
 
     public class ComplexTableDto : TableDetailsDto
     {
+
+        public ComplexTableDto() { }
+
+        public ComplexTableDto(int tableNumber, int chairCount, List<Entities.Reservation> reservations)
+            : base(tableNumber, chairCount) 
+            => (Reservations) = (reservations);
 
         public List<Entities.Reservation> Reservations { get; set; }
 

@@ -10,24 +10,15 @@ namespace Domain.Entities
     public class Reservation : AuditableEntity
     {
 
-        public Reservation()
-        {
+        public Reservation(){}
 
-        }
+        public Reservation(Date date, int hour, string customerId, int tableId, int duration)
+            => (Date, Hour, CustomerId, TableId, Duration)
+            = (date, hour, customerId, tableId, duration);
 
-        public Reservation(Date date
-            , int hour
-            , string customerId
-            , int tableId
-            , int duration)
-        {
-            this.Duration = duration;
-            this.CustomerId = customerId;
-            this.TableId = tableId;
-            this.Date = date;
-            this.Hour = hour;
-        }
-
+        /// <summary>
+        /// Minutes.
+        /// </summary>
         public const int DefaultDuration = 60;
 
         public int Id { get; private set; }
@@ -41,8 +32,6 @@ namespace Domain.Entities
 
         public int? TableId { get; private set; }
         public Table Table { get; set; }
-
-        //public int OrderId { get; set; }
         public string OrderId { get; private set; }
         public Order Order { get; set; }
 
@@ -55,18 +44,7 @@ namespace Domain.Entities
         }
 
         public void SetOrderId(string id)
-        {
-            this.OrderId = id;
-        }
-
-        //public Reservation CreateOrder(Order order
-        //    ,List<Product> products)
-        //{
-        //    this.Order = order;
-        //    this.Order.OrderDetails = new OrderDetails();
-        //    this.Order.OrderDetails.Products = products;
-        //    return this;
-        //}
+            => this.OrderId = id;
 
     }
 }

@@ -15,62 +15,38 @@ namespace Application.Product.Queries
     public class ProductsListQuery : IRequest<ProductsListResponse>
     {
 
-        public ProductsListQuery(
-            PriceFilter priceFilter
-            , Category category
-            )
-        {
-            PriceFilter = priceFilter;
-            Category = category;
-        }
+        public ProductsListQuery(PriceFilter priceFilter, Category category)
+            => (this.PriceFilter, this.Category) = (priceFilter, category);
 
-        public ProductsListQuery(
-            PriceFilter priceFilter
-            , Category category
-            , int page) 
+        public ProductsListQuery(PriceFilter priceFilter, Category category, int page)
             : this(priceFilter, category)
-        {
-            Page = page;
-        }
+            => (this.PriceFilter, this.Category, this.Page) = (priceFilter, category, page);
 
         public PriceFilter PriceFilter { get; } = PriceFilter.Ascending;
         public Category Category { get; }
-
-        public int Page { get; }
-
+        public int Page { get; } 
 
     }
 
     public class ProductsListResponse
     {
+        public ProductsListResponse() { }
 
-        public const int ResultsOnPage = 10;
+        public ProductsListResponse(List<Domain.Entities.Product> products)
+            => (this.Products) = (products);
 
         public ProductsListResponse(List<Domain.Entities.Product> products
-            , int page
-            , int totalPages
-            , int totalResults)
+            , int page, int totalPages)
             : this(products)
-        {
-            Page = page;
-            TotalPages = totalPages;
-            TotalResults = totalResults;
-        }
+            => (this.Page, this.TotalPages) = (page, totalPages);
 
-        public ProductsListResponse(){}
-        public ProductsListResponse(
-            List<Domain.Entities.Product> products
-            )
-        {
-            Products = products;
-        }
-
-        public List<Domain.Entities.Product> Products { get; } = new List<Domain.Entities.Product>(ResultsOnPage);
-
+        public const int ResultsOnPage = 10;
 
         public int Page { get; set; }
         public int TotalPages { get; set; }
         public int TotalResults { get; set; }
+        
+        public List<Domain.Entities.Product> Products { get; }
     }
 
     public class ProductsListHandler : IRequestHandler<ProductsListQuery, ProductsListResponse>
@@ -78,92 +54,65 @@ namespace Application.Product.Queries
 
         private readonly IEasyEatsDbContext context;
 
-        public ProductsListHandler(
-            IEasyEatsDbContext context
-            )
-        {
-            this.context = context;
-        }
+        public ProductsListHandler(IEasyEatsDbContext context)
+        => (this.context) = (context);
 
         public async Task<ProductsListResponse> Handle(ProductsListQuery request, CancellationToken cancellationToken)
         {
 
-            var productsList = new ProductsListResponse();
-
-            switch (request.Category)
+            var list = request.Category switch
             {
-                case Category.Food:
-                    switch (request.PriceFilter)
+                Category.Food =>
+                    request.PriceFilter switch
                     {
-                        case PriceFilter.Ascending:
-                            productsList = new ProductsListResponse(
-                                await context.Products.AsNoTracking()
-                                .Where(x => x.Category == Category.Food)
-                                .OrderBy(x => x.Price).ToListAsync());
-                            break;
-                        case PriceFilter.Descending:
-                            productsList = new ProductsListResponse(
-                                await context.Products.AsNoTracking()
-                                .Where(x => x.Category == Category.Food)
-                                .OrderByDescending(x => x.Price).ToListAsync());
-                            break;
-                        default:
-                            productsList = new ProductsListResponse(
-                                await context.Products.AsNoTracking().ToListAsync());
-                            break;
-                    }
-                    break;
+                        PriceFilter.Ascending =>
+                                    await context.Products.AsNoTracking()
+                                    .Where(x => x.Category == Category.Food)
+                                    .OrderBy(x => x.Price).ToListAsync(),
+                        PriceFilter.Descending => 
+                                    await context.Products.AsNoTracking()
+                                    .Where(x => x.Category == Category.Food)
+                                    .OrderByDescending(x => x.Price).ToListAsync(),
+                        _ => null
+                    },
 
-                case Category.Drink:
-                    switch (request.PriceFilter)
+                Category.Drink => 
+                    request.PriceFilter switch
                     {
-                        case PriceFilter.Ascending:
-                            productsList = new ProductsListResponse(
+                        PriceFilter.Ascending =>
                                  await context.Products.AsNoTracking()
                                 .Where(x => x.Category == Category.Drink)
-                                .OrderBy(x => x.Price).ToListAsync());
-                            break;
-                        case PriceFilter.Descending:
-                            productsList = new ProductsListResponse(
+                                .OrderBy(x => x.Price).ToListAsync(),
+                        PriceFilter.Descending =>
                                 await context.Products.AsNoTracking()
                                 .Where(x => x.Category == Category.Drink)
-                                .OrderByDescending(x => x.Price).ToListAsync());
-                            break;
-                        default:
-                            productsList = new ProductsListResponse(
-                                await context.Products.AsNoTracking().ToListAsync());
-                            break;
-                    }
-                    break;
-                default:
-                    productsList = new ProductsListResponse(
-                                await context.Products.AsNoTracking().ToListAsync());
-                    break;
-            }
+                                .OrderByDescending(x => x.Price).ToListAsync(),
+                        _ => null
+                    },
 
-            var resultsOnPage = ProductsListResponse.ResultsOnPage;
-            var pages = productsList.Products.Count() / ProductsListResponse.ResultsOnPage;
+                _ => null
 
-            if (productsList.Products.Count() % ProductsListResponse.ResultsOnPage != 0)
-            {
-                pages += 1;
-            }
+            };
 
-            if (request.Page == pages)
-            {
-                resultsOnPage = productsList.Products.Count() % ProductsListResponse.ResultsOnPage;
-            }
+            var productsList = new ProductsListResponse(list);
+            var totalResults = productsList.Products.Count();
 
+            var pages =
+                totalResults % ProductsListResponse.ResultsOnPage != 0
+                ? totalResults / ProductsListResponse.ResultsOnPage + 1
+                : totalResults / ProductsListResponse.ResultsOnPage;
+
+            var resultsOnPage = 
+                request.Page == pages
+                ? totalResults % ProductsListResponse.ResultsOnPage
+                : ProductsListResponse.ResultsOnPage ;
 
 
             var result = new ProductsListResponse(
                 products: productsList.Products.GetRange(
-                    (request.Page - 1) * ProductsListResponse.ResultsOnPage
-                    , resultsOnPage
-                    ),
+                    (request.Page - 1) * ProductsListResponse.ResultsOnPage, resultsOnPage),
                 page: request.Page,
-                totalPages: pages,
-                totalResults: productsList.Products.Count()
+                totalPages: pages
                 );
 
             return result;

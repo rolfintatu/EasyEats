@@ -9,18 +9,15 @@ namespace Domain.Entities
     {
 
         public Order()
-        {
-            this.Date = DateTime.UtcNow;
-        }
+            => (Date, OrderItems) = (DateTime.UtcNow, new List<OrderItems>());
 
-        public Order(string customerId
-            , string orderId)
-            :this()
-        {
-            var Id = orderId;
-            this.CustomerId = customerId;
-            this.Date = DateTime.UtcNow;
-        }
+        public Order(string customerId, string id)
+            => (CustomerId, Id) = (customerId, id);
+
+        public Order(
+            List<OrderItems> items, string customerId, string id)
+            : this(customerId, id) 
+            => (this.OrderItems, this.Date) = (items, DateTime.UtcNow);
 
         public string Id { get; private set; }
         public DateTime Date { get; private set; }
@@ -28,9 +25,9 @@ namespace Domain.Entities
         public string CustomerId { get; private set; }
         public Customer Customer { get; set; }
 
-        public List<OrderItems> OrderItems { get; set; }
-
         public Bill Bill { get; set; }
         public Reservation Reservation { get; set; }
+        
+        public List<OrderItems> OrderItems { get; set; }
     }
 }
