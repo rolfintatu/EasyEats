@@ -12,13 +12,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Product.Queries
 {
-    public class ProductsListQuery : IRequest<ProductsListResponse>
+    public class ProductsList : IRequest<ProductsListResponse>
     {
 
-        public ProductsListQuery(PriceFilter priceFilter, Category category)
+        public ProductsList(PriceFilter priceFilter, Category category)
             => (this.PriceFilter, this.Category) = (priceFilter, category);
 
-        public ProductsListQuery(PriceFilter priceFilter, Category category, int page)
+        public ProductsList(PriceFilter priceFilter, Category category, int page)
             : this(priceFilter, category)
             => (this.PriceFilter, this.Category, this.Page) = (priceFilter, category, page);
 
@@ -49,7 +49,7 @@ namespace Application.Product.Queries
         public List<Domain.Entities.Product> Products { get; }
     }
 
-    public class ProductsListHandler : IRequestHandler<ProductsListQuery, ProductsListResponse>
+    public class ProductsListHandler : IRequestHandler<ProductsList, ProductsListResponse>
     {
 
         private readonly IEasyEatsDbContext context;
@@ -57,7 +57,7 @@ namespace Application.Product.Queries
         public ProductsListHandler(IEasyEatsDbContext context)
         => (this.context) = (context);
 
-        public async Task<ProductsListResponse> Handle(ProductsListQuery request, CancellationToken cancellationToken)
+        public async Task<ProductsListResponse> Handle(ProductsList request, CancellationToken cancellationToken)
         {
 
             var list = request.Category switch

@@ -15,6 +15,8 @@ namespace Application.Table.Queries.TableDetails
 {
     public class TableDetailsQuery : IRequest<TableDetailsDto>
     {
+        public TableDetailsQuery(int id)
+            => (Id) = (id);
         public int Id { get; set; }
     }
 

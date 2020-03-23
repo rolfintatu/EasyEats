@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Application.OrderItem.Commands
 {
-    public class RemoveItemCommand : IRequest
+    public class RemoveItem : IRequest
     {
 
-        public RemoveItemCommand(
+        public RemoveItem(
             int orderItemId
             )
         {
@@ -23,7 +23,7 @@ namespace Application.OrderItem.Commands
 
     }
 
-    public class RemoveItemHandler : IRequestHandler<RemoveItemCommand>
+    public class RemoveItemHandler : IRequestHandler<RemoveItem>
     {
         private readonly IEasyEatsDbContext context;
 
@@ -35,7 +35,7 @@ namespace Application.OrderItem.Commands
         }
 
 
-        public async Task<Unit> Handle(RemoveItemCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveItem request, CancellationToken cancellationToken)
         {
             var orderItem = await context.OrderItems
                 .SingleOrDefaultAsync(x => x.Id == request.OrderItemId);

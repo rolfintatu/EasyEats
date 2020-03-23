@@ -13,17 +13,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Product.Commands
 {
-    public class CreateProductCommand : IRequest
+    public class CreateProduct : IRequest
     {
-        public CreateProductCommand(ProductDto product)
-        {
-            this.Product = product;
-        }
+        public CreateProduct(ProductDto product)
+        => (Product) = (product);
 
         public ProductDto Product { get; }
     }
 
-    public class CreateProductValidator : AbstractValidator<CreateProductCommand>
+    public class CreateProductValidator : AbstractValidator<CreateProduct>
     {
         public CreateProductValidator()
         {
@@ -32,7 +30,7 @@ namespace Application.Product.Commands
         }
     }
 
-    public class CreateProductHandler : IRequestHandler<CreateProductCommand>
+    public class CreateProductHandler : IRequestHandler<CreateProduct>
     {
         private readonly IEasyEatsDbContext context;
         private readonly IMapper mapper;
@@ -46,7 +44,7 @@ namespace Application.Product.Commands
             this.mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateProduct request, CancellationToken cancellationToken)
         {
 
             var ifExist = await context.Products

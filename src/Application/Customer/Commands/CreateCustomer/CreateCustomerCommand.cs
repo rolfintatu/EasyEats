@@ -18,7 +18,7 @@ namespace Application.Customer.Commands.CreateCustomer
         public CreateCustomerCommand(
             string id
             , string name
-            , string numberPhone)
+            , int numberPhone)
         {
             Id = id;
             Name = name;
@@ -27,7 +27,7 @@ namespace Application.Customer.Commands.CreateCustomer
 
         public string Id { get; set; }
         public string Name { get; set; }
-        public string NumberPhone { get; set; }
+        public int NumberPhone { get; set; }
     }
 
     public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand>
@@ -45,7 +45,7 @@ namespace Application.Customer.Commands.CreateCustomer
         // TODO: Change number phone type
         public async Task<Unit> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            await context.Customers.AddAsync(new Entities.Customer { Id = request.Id, Name = request.Name, Phone = 0 });
+            await context.Customers.AddAsync(new Entities.Customer { Id = request.Id, Name = request.Name, Phone = request.NumberPhone });
 
             var DbResponse = await context.SaveChangesAsync(cancellationToken);
 

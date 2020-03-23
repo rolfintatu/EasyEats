@@ -45,7 +45,7 @@ namespace Application.Test.Product
                 new Domain.Entities.Product("thirteen", 12, 1, Domain.Enums.Category.Food, 10, ""),
             };
 
-            var request = new ProductsListQuery(
+            var request = new ProductsList(
                    Domain.Enums.PriceFilter.Ascending
                    , Domain.Enums.Category.Drink, 1);
 
@@ -65,12 +65,12 @@ namespace Application.Test.Product
                 products.Where(x => x.Category == Category.Drink).Take(10)
                 , actual.Products);
 
-            actual = await productsListHandler.Handle(new ProductsListQuery(PriceFilter.Ascending, Category.Drink, 2), default(CancellationToken));
+            actual = await productsListHandler.Handle(new ProductsList(PriceFilter.Ascending, Category.Drink, 2), default(CancellationToken));
 
             Assert.Single(actual.Products);
 
 
-            actual = await productsListHandler.Handle(new ProductsListQuery(PriceFilter.Ascending, Category.Food, 1), default(CancellationToken));
+            actual = await productsListHandler.Handle(new ProductsList(PriceFilter.Ascending, Category.Food, 1), default(CancellationToken));
 
             Assert.Equal(2, actual.Products.Count());
 

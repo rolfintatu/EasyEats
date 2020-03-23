@@ -27,25 +27,7 @@ namespace Application.Order.Queries
         public readonly List<Common.Dtos.OrderDto> Orders;
     }
 
-    public class OrderListQuery : IRequest<OrderListResponse>
-    {
-
-        public OrderListQuery(Date date
-            ,string userName)
-        {
-            this.DateFilter = date;
-            this.UserName = userName;
-
-        }
-
-        //ByDate
-        public Date DateFilter { get; private set; }
-
-        //ByUser
-        public string UserName { get; private set; }
-
-
-    }
+    public class OrderListQuery : IRequest<OrderListResponse>{}
 
     public class OrderListHandler : IRequestHandler<OrderListQuery, OrderListResponse>
     {

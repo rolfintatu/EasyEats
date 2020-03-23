@@ -37,6 +37,7 @@ namespace Application.Reservation.Queries.ReservationsByUser
             var reservationsList = await context.Reservations
                 .AsNoTracking()
                 .Where(x => x.CustomerId == userService.UserId && x.Status != Domain.Enums.ReservationStatus.Canceled)
+                .Include(x => x.Table)
                 .ProjectTo<MixReservationDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
 

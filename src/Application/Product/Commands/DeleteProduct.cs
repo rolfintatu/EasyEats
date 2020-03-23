@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Application.Product.Commands
 {
-    public class DeleteProductCommand : IRequest
+    public class DeleteProduct : IRequest
     {
 
-        public DeleteProductCommand(int productId)
+        public DeleteProduct(int productId)
         {
             this.ProductId = productId;
         }
@@ -22,7 +22,7 @@ namespace Application.Product.Commands
 
     }
 
-    public class DeleteProductHandler : IRequestHandler<DeleteProductCommand>
+    public class DeleteProductHandler : IRequestHandler<DeleteProduct>
     {
         private readonly IEasyEatsDbContext context;
 
@@ -32,7 +32,7 @@ namespace Application.Product.Commands
         {
             this.context = context;
         }
-        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteProduct request, CancellationToken cancellationToken)
         {
             var product = await context.Products
                 .SingleOrDefaultAsync(x => x.Id == request.ProductId);

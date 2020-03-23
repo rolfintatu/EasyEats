@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Application.OrderItem.Commands
 {
-    public class AddItemCommand : IRequest
+    public class AddItem : IRequest
     {
-        public AddItemCommand(
+        public AddItem(
             string orderId
             , int itemId
             , int quantity
@@ -27,18 +27,18 @@ namespace Application.OrderItem.Commands
         public int Quantity { get; private set; }
     }
 
-    public class AddItemCommandHandler : IRequestHandler<AddItemCommand>
+    public class AddItemHandler : IRequestHandler<AddItem>
     {
         private readonly IEasyEatsDbContext context;
 
-        public AddItemCommandHandler(
+        public AddItemHandler(
             IEasyEatsDbContext context
             )
         {
             this.context = context;
         }
 
-        public async Task<Unit> Handle(AddItemCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddItem request, CancellationToken cancellationToken)
         {
             var orderItem = await context.OrderItems
                 .SingleOrDefaultAsync(x => x.OrderId == request.OrderId && x.ProductId == request.ItemId);

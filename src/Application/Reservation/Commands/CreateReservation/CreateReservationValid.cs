@@ -9,10 +9,10 @@ namespace Application.Reservation.Commands.CreateReservation
     {
         public CreateReservationValid()
         {
-            RuleFor(x => x.Date.Day)
+            RuleFor(x => x.Day)
                 .Must(ChackDay);
 
-            RuleFor(x => x.Date.Month)
+            RuleFor(x => x.Month)
                 .Must(CheckMouth);
 
             RuleFor(x => x.Hour)

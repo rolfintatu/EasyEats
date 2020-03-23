@@ -12,13 +12,13 @@ using Application.Common.Dtos;
 
 namespace Application.Order.Commands
 {
-    public class CreateOrderCommand : IRequest
+    public class CreateOrder : IRequest
     {
 
-        public CreateOrderCommand(int reservationId)
+        public CreateOrder(int reservationId)
             => (ReservationId) = (reservationId);
 
-        public CreateOrderCommand(int reservationId, string userId)
+        public CreateOrder(int reservationId, string userId)
             : this(reservationId)
             => (UserId) = (userId);
 
@@ -26,14 +26,14 @@ namespace Application.Order.Commands
         public int ReservationId { get; private set; }
     }
 
-    public class CreateOrderHandler : IRequestHandler<CreateOrderCommand>
+    public class CreateOrderHandler : IRequestHandler<CreateOrder>
     {
         private readonly IEasyEatsDbContext context;
 
         public CreateOrderHandler(IEasyEatsDbContext context)
             => (this.context) = (context);
 
-        public async Task<Unit> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateOrder request, CancellationToken cancellationToken)
         {
 
             if (!string.IsNullOrEmpty(request.UserId))

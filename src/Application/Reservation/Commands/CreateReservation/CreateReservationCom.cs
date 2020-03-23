@@ -14,13 +14,11 @@ namespace Application.Reservation.Commands.CreateReservation
 {
     public class CreateReservationCom : IRequest
     {
-        public Date Date { get; set; }
+        public int Day { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
         public int Hour { get; set; }
         public int Duration { get; set; }
-
-        //public string CustomerId { get; set; }
-        //public Entities.Customer Customer { get; set; }
-
         public int TableId { get; set; }
 
     }
@@ -47,7 +45,7 @@ namespace Application.Reservation.Commands.CreateReservation
 
             await context.Reservations.AddAsync(
                 new Entities.Reservation(
-                        request.Date,
+                        new Date(request.Day, request.Month, request.Year),
                         request.Hour,
                         userService.UserId,
                         request.TableId,

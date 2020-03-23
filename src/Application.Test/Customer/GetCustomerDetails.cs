@@ -47,7 +47,7 @@ namespace Application.Test.Customer
 
             var customerDetailsHandler = new CustomerDetailsHandler(_context.Object, _userService.Object, mapper);
 
-            var actual = await customerDetailsHandler.Handle(new CustomerDetailsQuery(expected.Id), default(CancellationToken));
+            var actual = await customerDetailsHandler.Handle(new CustomerDetails(expected.Id), default(CancellationToken));
 
             Assert.True(actual != null);
             Assert.Equal(expected.Name, actual.Name);

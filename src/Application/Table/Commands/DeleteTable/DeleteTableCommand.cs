@@ -12,6 +12,8 @@ namespace Application.Table.Commands.DeleteTable
 {
     public class DeleteTableCommand : IRequest
     {
+        public DeleteTableCommand(int id)
+            => (Id) = (id); 
         public int Id { get; set; }
     }
 

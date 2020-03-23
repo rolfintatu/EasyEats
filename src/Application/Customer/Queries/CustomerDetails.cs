@@ -11,19 +11,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Customer.Queries.CustomerDetails
+namespace Application.Customer.Queries
 {
-    public class CustomerDetailsQuery : IRequest<CustomerDetailsDto>
+    public class CustomerDetails : IRequest<CustomerDetailsDto>
     {
-        public CustomerDetailsQuery() { }
+        public CustomerDetails() { }
 
-        public CustomerDetailsQuery(string userId)
+        public CustomerDetails(string userId)
             => (UserId) = (userId);
 
         public string UserId { get; set; }
     }
 
-    public class CustomerDetailsHandler : IRequestHandler<CustomerDetailsQuery, CustomerDetailsDto>
+    public class CustomerDetailsHandler : IRequestHandler<CustomerDetails, CustomerDetailsDto>
     {
         private readonly IEasyEatsDbContext context;
         private readonly ICurrentUserService currentUser;
@@ -34,7 +34,7 @@ namespace Application.Customer.Queries.CustomerDetails
             => (this.context, this.currentUser, this.mapper)
             = (context, currentUser, mapper);
 
-        public async Task<CustomerDetailsDto> Handle(CustomerDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<CustomerDetailsDto> Handle(CustomerDetails request, CancellationToken cancellationToken)
         {
             var result = await context.Customers
                 .AsNoTracking()
