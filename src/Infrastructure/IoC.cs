@@ -6,6 +6,7 @@ using Infrastructure.Data;
 using Application.Common.Interfaces;
 using Infrastructure.Identity;
 using Infrastructure.Services;
+using System;
 
 namespace Infrastructure
 {
@@ -16,7 +17,7 @@ namespace Infrastructure
 
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("IdentityConnection"), x =>x.MigrationsAssembly("Infrastructure")));
+                    configuration.GetConnectionString("IdentityConnection"), x => x.MigrationsAssembly("Infrastructure")));
 
             services.AddDbContext<EasyEatsDbContext>(options =>
                 options.UseSqlServer(
@@ -24,7 +25,8 @@ namespace Infrastructure
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>();
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -32,12 +34,15 @@ namespace Infrastructure
                 {
                     RequiredLength = 6
                 };
+
             });
 
             services.AddTransient<IEasyEatsDbContext, EasyEatsDbContext>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddScoped<IEasyEatsDbContext>(x => x.GetService<EasyEatsDbContext>());
             services.AddScoped<IDateTime, DateTimeService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddDataProtection();
 
         }
     }

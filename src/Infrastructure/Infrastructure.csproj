@@ -11,6 +11,8 @@
     <Compile Remove="Data\Migrations\20200211172037_Order_ChangeIdDataType.Designer.cs" />
     <Compile Remove="Data\Migrations\20200304094120_DataBase_AddAuditForEachEntity.cs" />
     <Compile Remove="Data\Migrations\20200304094120_DataBase_AddAuditForEachEntity.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200319171641_SomeChanges.cs" />
+    <Compile Remove="Data\Migrations\20200319171641_SomeChanges.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
