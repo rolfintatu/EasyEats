@@ -11,6 +11,9 @@ using System.Text;
 using FluentValidation.AspNetCore;
 using Application.Common.Interfaces;
 using WebUi.Services;
+using Infrastructure.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebUi
 {
@@ -43,12 +46,15 @@ namespace WebUi
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = "JwtBearer";
-                options.DefaultChallengeScheme = "JwtBearer";
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer("JwtBearer", jwtBearerOptions =>
+                .AddJwtBearer(x =>
                 {
-                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters()
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+
+                    x.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("SecretKey"))),
@@ -58,12 +64,13 @@ namespace WebUi
                         ClockSkew = TimeSpan.FromMinutes(5)
                     };
                 });
+            
 
 
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Easy Eats v1", Version = "v1" });
-
+                
                 x.AddSecurityDefinition("Bearer",
                     new OpenApiSecurityScheme
                     {
@@ -87,7 +94,11 @@ namespace WebUi
                            new List<string>() }
                         }
                     );
+                x.UseInlineDefinitionsForEnums();
             });
+
+            services.AddSwaggerGenNewtonsoftSupport();
+            services.AddDataProtection();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -97,7 +108,7 @@ namespace WebUi
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
 
-                app.UseSwagger();
+                app.UseSwagger(x => x.SerializeAsV2 = true);
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyEatsV1");

@@ -81,7 +81,7 @@ namespace WebUi.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser(Input.Email);
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 var resultCustomer = await mediator.Send(new CreateCustomerCommand() { Id = user.Id, Name = user.UserName });
 
