@@ -11,11 +11,13 @@ namespace Domain.ValueObjects
         /// </summary>
         /// <param name="dateTime">You can use and DateTime.</param>
 
+        public Date() { }
+
         public Date(int day, int month, int year)
             => (Day, Month, Year) = (day, month, year);
 
         public Date(DateTime dateTime)
-            : this(dateTime.Day, dateTime.Month, dateTime.Year) { }
+            => (Day, Month, Year) = (dateTime.Day, dateTime.Month, dateTime.Year);
 
         public int Day { get; private set; }
         public int Month { get; private set; }

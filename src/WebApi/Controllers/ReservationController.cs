@@ -9,49 +9,36 @@ using Application.Reservation.Queries.ReservationsList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUi.Controllers
+namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("EasyApi/[controller]")]
     [ApiController]
     public class ReservationController : BaseController
     {
+        //Queries
         [HttpGet]
-        public async Task<ActionResult> GetAll()
-        {
-            var results = await mediator.Send(new ReservationsListQuery());
+        public async Task<IActionResult> GetAll()
+            => Ok(await mediator.Send(new ReservationsListQuery()));
 
-            return Ok(results);
-        }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetByUser(int id)
-        {
-            var reservation = await mediator.Send(new ResByUserCom());
-
-            return Ok(reservation);
-        }
+        public async Task<IActionResult> GetByUser([FromRoute] int id)
+            => Ok(await mediator.Send(new ResByUserCom()));
 
 
-        [HttpPost]
+        //Commands
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create([FromBody] CreateReservationCom command)
-        {
-            await mediator.Send(command);
+        public async Task Create([FromBody] CreateReservationCom command)
+            => await mediator.Send(command);
 
-            return Ok();
-
-        }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
-        {
+        public async Task Delete([FromBody] int id)
+            => await mediator.Send(new CancelReservationCom() { Id = id });
 
-            await mediator.Send(new CancelReservationCom() { Id = id });
-
-            return Ok();
-        }
     }
 }

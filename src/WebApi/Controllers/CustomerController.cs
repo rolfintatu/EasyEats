@@ -10,43 +10,33 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUi.Controllers
+namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("EasyApi/[controller]")]
     [ApiController]
     //[Authorize]
     public class CustomerController : BaseController
     {
+        //Queires
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Details([FromQuery]string id)
+        => Ok(await mediator.Send(new CustomerDetails() { UserId = id }));
 
+        //Commands
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> AddAddress([FromBody] AddAddressCommand command)
-        {
-            await mediator.Send(command);
+        public async Task AddAddress([FromBody] AddAddressCommand command)
+        => await mediator.Send(command);
 
-            return NoContent();
-        }
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAddress()
-        {
-            await mediator.Send(new DeleteAddressCommand());
-
-            return NoContent();
-        }
-
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CustomerDetailsDto>> GetDetails([FromQuery]string id)
-        {
-            var customerDetails = await mediator.Send(new CustomerDetailsQuery() { UserId = id });
-
-            return customerDetails;
-        }
+        public async Task DeleteAddress()
+        => await mediator.Send(new DeleteAddressCommand());
 
     }
 }

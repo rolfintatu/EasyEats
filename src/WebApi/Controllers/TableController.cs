@@ -9,48 +9,36 @@ using Application.Table.Queries.TableList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUi.Controllers
+namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("EasyApi/[controller]")]
     [ApiController]
     public class TableController : BaseController
     {
-
+        //Queries
         [HttpGet]
-        public async Task<ActionResult> GetAll()
-        {
-            var results = await mediator.Send(new TablesListQuery());
-
-            return Ok(results);
-        }
+        public async Task<IActionResult> GetAll()
+        => Ok(await mediator.Send(new TablesListQuery()));
+        
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> Get(int id)
-        {
-            var tableDetails = await mediator.Send(new TableDetailsQuery() { Id = id });
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> Get([FromRoute] int id)
+        => Ok(await mediator.Send(new TableDetailsQuery(id)));
 
-            return Ok(tableDetails);
-        }
-
-        [HttpPost]
+        //Commands
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Create([FromBody] CreateTableCommand command)
-        {
-            await mediator.Send(command);
+        public async Task Create([FromBody] CreateTableCommand command)
+        => await mediator.Send(command);
 
-            return NoContent();
-        }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await mediator.Send(new DeleteTableCommand() { Id = id });
-
-            return NoContent();
-        }
+        public async Task Delete([FromBody] int id)
+        => await mediator.Send(new DeleteTableCommand(id));
 
     }
 }

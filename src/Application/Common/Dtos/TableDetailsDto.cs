@@ -1,9 +1,6 @@
-﻿using Domain.Enums;
-using Application.Common.Mapping;
+﻿using Application.Common.Mapping;
 using AutoMapper;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Entities = Domain.Entities;
 
 namespace Application.Common.Dtos
@@ -34,15 +31,15 @@ namespace Application.Common.Dtos
 
         public ComplexTableDto() { }
 
-        public ComplexTableDto(int tableNumber, int chairCount, List<Entities.Reservation> reservations)
+        public ComplexTableDto(int tableNumber, int chairCount, List<ComplexReservationDto> reservations)
             : base(tableNumber, chairCount) 
             => (Reservations) = (reservations);
 
-        public List<Entities.Reservation> Reservations { get; set; }
+        public List<ComplexReservationDto> Reservations { get; set; }
 
         public override void Mapping(Profile profile)
         {
-            profile.CreateMap<Entities.Table, ComplexCustomerDto>();
+            profile.CreateMap<Entities.Reservation, ComplexReservationDto>();
         }
 
     }

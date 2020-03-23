@@ -1,27 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Order.Commands;
-using Application.OrderItem.Commands;
+﻿using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Models;
+using Commands = Application.Order.Commands;
+using Queires = Application.Order.Queries;
+using ValueObjects = Domain.ValueObjects;
 
-namespace WebUi.Controllers
+namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("EasyApi/[controller]")]
     [ApiController]
     public class OrderController : BaseController
     {
-        [HttpPost("Create")]
-        public async Task<Unit> CreateOrderforReservation([FromQuery] int reservationId)
-            => await mediator.Send(new CreateOrderCommand(reservationId));
 
-        [HttpPost("Add")]
-        public async Task<Unit> AddItems([FromQuery] int productId
-            , [FromQuery] string orderId
-            , [FromQuery] int quantity)
-            => await mediator.Send(new AddItemCommand(orderId, productId, quantity));
+        //Commands
+        [HttpPut]
+        public async Task Create([FromQuery] int reservationId)
+            => await mediator.Send(new Commands.CreateOrder(reservationId));
+
+        //Queries
+        [HttpGet]
+        public async Task<Queires.OrderListResponse> List()
+            => await mediator.Send(new Queires.OrderListQuery());
+
+        [HttpGet("Date&UserName")]
+        public async Task<Queires.OrderListByUResponse> List
+            ([FromBody] DateAndUserName data)
+            => await mediator.Send(new Queires.OrderListByUser(
+                new ValueObjects.Date(data.Day, data.Month, data.Year), data.UserName));
+
     }
 }

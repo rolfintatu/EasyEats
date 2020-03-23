@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace WebUi.Controllers
+namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("EasyApi/[controller]")]
     [ApiController]
     public abstract class BaseController : ControllerBase
     {
