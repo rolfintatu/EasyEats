@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Customer.Commands.AddAddress;
 using Application.Customer.Commands.DeleteAddress;
-using Application.Customer.Queries.CustomerDetails;
+using Application.Customer.Queries;
 using Application.Common.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +14,7 @@ namespace WebApi.Controllers
 {
     [Route("EasyApi/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CustomerController : BaseController
     {
         //Queires

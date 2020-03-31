@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Mapping;
-using Application.Customer.Queries.CustomerDetails;
+using Application.Customer.Queries;
 using AutoMapper;
 using MediatR;
 using MockQueryable.Moq;

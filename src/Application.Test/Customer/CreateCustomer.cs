@@ -26,7 +26,7 @@ namespace Application.Test.Customer
             var requestCustomer = new CreateCustomerCommand(
                 id: Guid.NewGuid().ToString(),
                 name: "Florin",
-                numberPhone: "1459832443"
+                numberPhone: 1459832443
                 );
 
             _context.Setup(x => x.Customers.AddAsync( It.IsAny<Entities.Customer>(), It.IsAny<CancellationToken>()));
