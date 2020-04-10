@@ -42,6 +42,7 @@ namespace Infrastructure
             services.AddScoped<IEasyEatsDbContext>(x => x.GetService<EasyEatsDbContext>());
             services.AddScoped<IDateTime, DateTimeService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IStorageService, AzureStorage>();
             services.AddDataProtection();
 
         }
