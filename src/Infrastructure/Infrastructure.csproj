@@ -13,13 +13,23 @@
     <Compile Remove="Data\Migrations\20200304094120_DataBase_AddAuditForEachEntity.Designer.cs" />
     <Compile Remove="Data\Migrations\20200319171641_SomeChanges.cs" />
     <Compile Remove="Data\Migrations\20200319171641_SomeChanges.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200403073231_db_AddImagesForProduct.cs" />
+    <Compile Remove="Data\Migrations\20200403073231_db_AddImagesForProduct.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200403110133_test.cs" />
+    <Compile Remove="Data\Migrations\20200403110133_test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200403110307_Image_PartII.cs" />
+    <Compile Remove="Data\Migrations\20200403110307_Image_PartII.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200403112450_Image_AddUrlField.cs" />
+    <Compile Remove="Data\Migrations\20200403112450_Image_AddUrlField.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.44.1.1888" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
@@ -30,6 +40,7 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
   <ItemGroup>

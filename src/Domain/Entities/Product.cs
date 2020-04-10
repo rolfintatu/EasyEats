@@ -31,7 +31,13 @@ namespace Domain.Entities
         public string Description { get; private set; }
         public bool OutOfStock { get; private set; } = false;
 
-        public List<OrderItems> OrderProducts { get; set; }
+        public List<OrderItems> OrderProducts { get; private set; }
+        public List<Image> Images { get; private set; }
+
+        public void SetImages(List<Image> images)
+        {
+            this.Images = images;
+        }
 
         public void IncreaseQuantity(int quantity)
         {

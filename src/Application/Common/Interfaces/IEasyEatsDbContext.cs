@@ -14,9 +14,8 @@ namespace Application.Common.Interfaces
         DbSet<Entities.Bill> Bills { get; set; }
         DbSet<Entities.Reservation> Reservations { get; set; }
         DbSet<Entities.Table> Tables { get; set; }
-
+        DbSet<Entities.Image> Images { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancelletion);
-
     }
 }
