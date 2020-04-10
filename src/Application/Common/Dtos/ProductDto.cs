@@ -28,10 +28,12 @@ namespace Application.Common.Dtos
         public Category Category { get; set; }
         public int Calories { get; set; }
         public string Description { get; set; }
+        public List<ImageDto> Images { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<ProductDto, Domain.Entities.Product>();
+            profile.CreateMap<Domain.Entities.Product, ProductDto>();
         }
 
     }
