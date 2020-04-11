@@ -12,13 +12,13 @@ namespace WebApi.Controllers
 {
     [Route("EasyApi/[controller]")]
     [ApiController]
-    public class PorductController : BaseController
+    public class ProductController : BaseController
     {
         //Queries
         [HttpGet]
         public async Task<IActionResult> ProductsList
-            ([FromQuery] PriceFilter priceFilter, [FromQuery]Category category)
-            => Ok(await mediator.Send(new Queries.ProductsList(priceFilter, category)));
+            ([FromQuery] PriceFilter priceFilter, [FromQuery]Category category, [FromQuery]int? page)
+            => Ok(await mediator.Send(new Queries.ProductsList(priceFilter, category, page)));
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

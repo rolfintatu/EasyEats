@@ -18,13 +18,13 @@ namespace Application.Product.Queries
         public ProductsList(PriceFilter priceFilter, Category category)
             => (this.PriceFilter, this.Category) = (priceFilter, category);
 
-        public ProductsList(PriceFilter priceFilter, Category category, int page)
+        public ProductsList(PriceFilter priceFilter, Category category, int? page)
             : this(priceFilter, category)
             => (this.PriceFilter, this.Category, this.Page) = (priceFilter, category, page);
 
         public PriceFilter PriceFilter { get; } = PriceFilter.Ascending;
         public Category Category { get; }
-        public int Page { get; } 
+        public int? Page { get; } 
 
     }
 
@@ -94,7 +94,10 @@ namespace Application.Product.Queries
 
             };
 
-            var productsList = new ProductsListResponse(list);
+            ProductsListResponse productsList;
+
+            _ = list.Count() is 0 ? throw new Exception("No products in database!") : productsList = new ProductsListResponse(list);
+
             var totalResults = productsList.Products.Count();
 
             var pages =
@@ -110,8 +113,8 @@ namespace Application.Product.Queries
 
             var result = new ProductsListResponse(
                 products: productsList.Products.GetRange(
-                    (request.Page - 1) * ProductsListResponse.ResultsOnPage, resultsOnPage),
-                page: request.Page,
+                    (request.Page ?? 1 - 1) * ProductsListResponse.ResultsOnPage, resultsOnPage != productsList.Products.Count ? productsList.Products.Count : resultsOnPage),
+                page: request.Page ?? 1,
                 totalPages: pages
                 );
 
