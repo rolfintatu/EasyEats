@@ -18,7 +18,7 @@ namespace Application.Common.Dtos
 
         //public TableStatus Status { get; set; }
 
-        public virtual void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Table, TableDetailsDto>()
             .ForMember(x => x.TableNumber, x => x.MapFrom(o => o.Id));
@@ -37,7 +37,7 @@ namespace Application.Common.Dtos
 
         public List<ComplexReservationDto> Reservations { get; set; }
 
-        public override void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Reservation, ComplexReservationDto>();
         }

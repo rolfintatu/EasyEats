@@ -24,7 +24,7 @@ namespace Application.Common.Mapping
             foreach (var type in types)
             {
                 var instance = Activator.CreateInstance(type);
-                var methodInfo = type.GetMethod("Mapping");
+                var methodInfo = type.GetMethod("Mapping", BindingFlags.NonPublic | BindingFlags.Instance);
                 methodInfo?.Invoke(instance, new object[] { this });
             }
         }

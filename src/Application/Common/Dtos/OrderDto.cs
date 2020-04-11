@@ -24,7 +24,7 @@ namespace Application.Common.Dtos
 
         public List<Entities.OrderItems> OrderItems { get; private set; }
 
-        public virtual void Mapping (Profile profile)
+        private void Mapping (Profile profile)
         {
             profile.CreateMap<Entities.Order, OrderDto>();
         }
@@ -51,7 +51,7 @@ namespace Application.Common.Dtos
         public Entities.Bill Bill { get; set; }
         public Entities.Reservation Reservation { get; set; }
 
-        public override void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Customer, CustomerDetailsDto>();
         }

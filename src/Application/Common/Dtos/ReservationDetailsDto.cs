@@ -21,7 +21,7 @@ namespace Application.Common.Dtos
         public int Duration { get; set; }
 
 
-        public virtual void Mapping (Profile profile)
+        private void Mapping (Profile profile)
         {
             profile.CreateMap<Entities.Reservation, ReservationDetailsDto>();
         }
@@ -39,7 +39,7 @@ namespace Application.Common.Dtos
         public CustomerDetailsDto Customer { get; set; }
         public TableDetailsDto Table { get; set; }
 
-        public override void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Reservation, ComplexReservationDto>()
                 .ForMember(x => x.Customer, x =>x.MapFrom(o => o.Customer));
@@ -56,7 +56,7 @@ namespace Application.Common.Dtos
 
         public TableDetailsDto Table { get; set; }
 
-        public override void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Reservation, MixReservationDto>()
                 .ForMember(x => x.Table, x => x.MapFrom(x => x.Table));

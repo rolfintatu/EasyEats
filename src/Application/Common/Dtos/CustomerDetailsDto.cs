@@ -21,7 +21,7 @@ namespace Application.Common.Dtos
         public int Phone { get; set; }
         public Address Address { get; set; }
 
-        public virtual void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Customer, CustomerDetailsDto>();
         }
@@ -40,7 +40,7 @@ namespace Application.Common.Dtos
         public List<MixReservationDto> Reservations { get; set; }
         public List<OrderDto> Orders { get; set; }
 
-        public override void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Customer, ComplexCustomerDto>()
                 .ForMember(x => x.Reservations, opt => opt.MapFrom(src => src.Reservations))

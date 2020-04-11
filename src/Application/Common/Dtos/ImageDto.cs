@@ -12,7 +12,7 @@ namespace Application.Common.Dtos
         public int Id { get; set; }
         public string Url { get; set; }
 
-        public void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<Entities.Image, ImageDto>();
         }

@@ -30,7 +30,7 @@ namespace Application.Common.Dtos
         public string Description { get; set; }
         public List<ImageDto> Images { get; set; }
 
-        public void Mapping(Profile profile)
+        private void Mapping(Profile profile)
         {
             profile.CreateMap<ProductDto, Domain.Entities.Product>();
             profile.CreateMap<Domain.Entities.Product, ProductDto>();
