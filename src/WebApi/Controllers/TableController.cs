@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Table.Commands.CreateTable;
 using Application.Table.Commands.DeleteTable;
+using Application.Table.Queries.TableAvailability;
 using Application.Table.Queries.TableDetails;
 using Application.Table.Queries.TableList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Models;
 
 namespace WebApi.Controllers
 {
@@ -25,6 +27,10 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Get([FromRoute] int id)
         => Ok(await mediator.Send(new TableDetailsQuery(id)));
+
+        [HttpGet("Availability")]
+        public async Task<IActionResult> Availability([FromQuery] int tableId, int day, int month, int year, int duration)
+            => Ok(await mediator.Send(new AvailabilityRequest(tableId, new Domain.ValueObjects.Date(day, month, year), duration)));
 
         //Commands
         [HttpPut]
