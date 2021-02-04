@@ -13,7 +13,6 @@ using Application.Common.Interfaces;
 using WebUi.Services;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebUi
 {
@@ -28,44 +27,17 @@ namespace WebUi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<ICurrentUserService, CurrentUserService>();
-
             services.AddControllers();
+            
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
 
             Application.IoC.Config(Configuration, services);
 
             Infrastructure.IoC.Config(services, Configuration);
 
-            services.AddRazorPages();
-
-            services.AddHttpContextAccessor();
-
             services.AddControllersWithViews()
                 .AddNewtonsoftJson()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IEasyEatsDbContext>());
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-
-                    x.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("SecretKey"))),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromMinutes(5)
-                    };
-                });
-            
-
 
             services.AddSwaggerGen(x =>
             {
@@ -95,6 +67,7 @@ namespace WebUi
                         }
                     );
                 x.UseInlineDefinitionsForEnums();
+
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
@@ -106,7 +79,6 @@ namespace WebUi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
 
                 app.UseSwagger(x => x.SerializeAsV2 = true);
                 app.UseSwaggerUI(c =>
@@ -130,7 +102,6 @@ namespace WebUi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }
