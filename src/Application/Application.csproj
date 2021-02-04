@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Models\" />
+    <Folder Include="Auth\" />
     <Folder Include="Reservation\Queries\ReservationsByTable\" />
     <Folder Include="Reservation\Queries\ReservationsByUser\" />
   </ItemGroup>
