@@ -29,7 +29,7 @@ namespace Infrastructure.Services
             this.emailService = emailService;
         }
 
-        public async Task<dynamic> GetToken(string userName, string password, string grant_type)
+        public async Task<TokenModel> GetToken(string userName, string password, string grant_type)
         {
             if (await VerifyUserData(userName, password))
             {
@@ -84,7 +84,7 @@ namespace Infrastructure.Services
             return await userManager.CheckPasswordAsync(user, password) && await userManager.IsEmailConfirmedAsync(user);
         }
 
-        private async Task<dynamic> GenerateToken(string userName)
+        private async Task<TokenModel> GenerateToken(string userName)
         {
             var user = await userManager.FindByEmailAsync(userName);
 
@@ -102,14 +102,13 @@ namespace Infrastructure.Services
                             SecurityAlgorithms.HmacSha256)),
                     new JwtPayload(claims));
 
-            var output = new
+            var output = new TokenModel
             {
-                Access_token = new JwtSecurityTokenHandler().WriteToken(token),
+                access_token = new JwtSecurityTokenHandler().WriteToken(token),
                 userName = userName
             };
 
             return output;
-
         }
     }
 }
