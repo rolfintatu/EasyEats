@@ -13,6 +13,7 @@ using Application.Common.Interfaces;
 using WebUi.Services;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Infrastructure;
 
 namespace WebUi
 {
@@ -27,17 +28,14 @@ namespace WebUi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            
-            services.AddTransient<ICurrentUserService, CurrentUserService>();
-
-            Application.IoC.Config(Configuration, services);
-
-            Infrastructure.IoC.Config(services, Configuration);
-
-            services.AddControllersWithViews()
+            services.AddControllers()
                 .AddNewtonsoftJson()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IEasyEatsDbContext>());
+
+            Application.IoC.Config(Configuration, services);
+            services.AddInfrastructure(Configuration);
+            
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
 
             services.AddSwaggerGen(x =>
             {

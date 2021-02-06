@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class IdentityService
+    public class IdentityService : IIdentityService
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<IdentityUser> userManager;
         private readonly IEmailService emailService;
 
         public IdentityService(
-            UserManager<ApplicationUser> userManager, 
+            UserManager<IdentityUser> userManager,
             IEmailService emailService)
         {
             this.userManager = userManager;
@@ -43,28 +43,40 @@ namespace Infrastructure.Services
 
         public async Task Register(RegistrationModel customerModel)
         {
-            if (userManager.FindByEmailAsync(customerModel.Email) != null)
+            try
             {
-                throw new Exception();
-            }
-            else
-            {
-                ApplicationUser user = new ApplicationUser(customerModel.Email);
-                var response = await userManager.CreateAsync(user, customerModel.Password);
-
-                if (response.Succeeded)
+                if (await userManager.FindByEmailAsync(customerModel.Email) == null)
                 {
-                    var userData = await userManager.FindByNameAsync(customerModel.Email);
+                    IdentityUser user = new IdentityUser()
+                    {
+                        Email = customerModel.Email,
+                        UserName = customerModel.Name,
+                        PhoneNumber = customerModel.PhoneNumber
+                    };
 
-                    var token = await userManager.GenerateEmailConfirmationTokenAsync(userData);
-                    var encodeToken = WebUtility.UrlEncode(token);
+                    var response = await userManager.CreateAsync(user, customerModel.Password);
 
-                    var link = $"https://localhost:5001/ConfirmEmail?userId={ user.Id }&code={ encodeToken }";
-
-                    await emailService.Send(
-                        new MessageDto(userData.Email, "Activation Account", link));
                 }
+
+                //if (response.Succeeded || response != null)
+                //{
+                //    var userData = await userManager.FindByNameAsync(customerModel.Email);
+
+                //    var token = await userManager.GenerateEmailConfirmationTokenAsync(userData);
+                //    var encodeToken = WebUtility.UrlEncode(token);
+
+                //    var link = $"https://localhost:5001/ConfirmEmail?userId={ user.Id }&code={ encodeToken }";
+
+                //    //await emailService.Send(
+                //    //    new MessageDto(userData.Email, "Activation Account", link));
+                //}
+                //else
+                //{
+                //    throw new Exception(response.Errors.First().Description);
+                //}
+
             }
+            catch (Exception ex) { }
         }
 
         public async Task<bool> ConfirmEmail(string userId, string code)

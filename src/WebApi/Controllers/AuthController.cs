@@ -18,6 +18,9 @@ using Application.Common.Interfaces;
 using Application.Common.Dtos;
 using System.Net;
 using Application.Customer.Commands.CreateCustomer;
+using Common.Models;
+using Application.Auth.Commands.LogInUser;
+using Application.Auth.Commands.UserRegistration;
 
 namespace WebApi.Controllers
 {
@@ -26,17 +29,34 @@ namespace WebApi.Controllers
     {
 
         [Route("/Token")]
-        [HttpGet]
-        public async Task<IActionResult> Create(string userName, string password, string grant_type)
+        [HttpPost]
+        public async Task<IActionResult> CreateToken([FromBody] LogInUserModel model)
         {
-             return BadRequest("");
+            if (!ModelState.IsValid) return BadRequest(ModelState.Values);
+
+            var result = await mediator.Send(model);
+
+            return Ok(result);
         } 
 
         [Route("/Register")]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] CreateCustomerModel customerModel)
         {
-            return BadRequest("");
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest();
+
+                await mediator.Send(
+                    new UserRegistrationModel(
+                        customerModel.Email, customerModel.Password, customerModel.Name, customerModel.Phone
+                        ));
+
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Route("/ConfirmEmail")]

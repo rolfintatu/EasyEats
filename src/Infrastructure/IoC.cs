@@ -15,18 +15,18 @@ namespace Infrastructure
 {
     public static class IoC
     {
-        public static void Config(IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("IdentityConnection"), x => x.MigrationsAssembly("Infrastructure")));
+            var conn = new ConnectionString(configuration.GetConnectionString("IdentityConnection"));
+            services.AddSingleton(conn);
+            services.AddDbContext<AppIdentityDbContext>();
 
             services.AddDbContext<EasyEatsDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("EasyEatsConnection"), x => x.MigrationsAssembly("Infrastructure")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddSignInManager()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -60,13 +60,16 @@ namespace Infrastructure
                   };
               });
 
-            services.AddTransient<IEasyEatsDbContext, EasyEatsDbContext>();
+            services.AddTransient<AppIdentityDbContext>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddScoped<IEasyEatsDbContext>(x => x.GetService<EasyEatsDbContext>());
             services.AddScoped<IDateTime, DateTimeService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IStorageService, AzureStorage>();
+            services.AddTransient<IIdentityService, IdentityService>();
             services.AddDataProtection();
+
+            return services;
         }
     }
 }
