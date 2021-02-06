@@ -1,25 +1,25 @@
-﻿using Infrastructure.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Identity
 {
-    public class AppIdentityDbContext : IdentityDbContext<ApplicationUser>
+    public class AppIdentityDbContext : IdentityDbContext<IdentityUser>
     {
+        private readonly ConnectionString ConnectionString;
 
-        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
-            :base(options)
+        public AppIdentityDbContext(ConnectionString connectionString)
+            :base()
+        { this.ConnectionString = connectionString; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseSqlServer(ConnectionString.Value, 
+                x => {
+                        x.MigrationsAssembly("Infrastructure");
+                        x.EnableRetryOnFailure(5);
+                    });
         }
-
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-
-            base.OnModelCreating(builder);
-        }
-
-
     }
 }
