@@ -5,25 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\20200115181135_TestSQLite.cs" />
-    <Compile Remove="Data\20200115181135_TestSQLite.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200211172037_Order_ChangeIdDataType.cs" />
-    <Compile Remove="Data\Migrations\20200211172037_Order_ChangeIdDataType.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200304094120_DataBase_AddAuditForEachEntity.cs" />
-    <Compile Remove="Data\Migrations\20200304094120_DataBase_AddAuditForEachEntity.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200319171641_SomeChanges.cs" />
-    <Compile Remove="Data\Migrations\20200319171641_SomeChanges.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200403073231_db_AddImagesForProduct.cs" />
-    <Compile Remove="Data\Migrations\20200403073231_db_AddImagesForProduct.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200403110133_test.cs" />
-    <Compile Remove="Data\Migrations\20200403110133_test.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200403110307_Image_PartII.cs" />
-    <Compile Remove="Data\Migrations\20200403110307_Image_PartII.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200403112450_Image_AddUrlField.cs" />
-    <Compile Remove="Data\Migrations\20200403112450_Image_AddUrlField.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.44.1.1888" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
