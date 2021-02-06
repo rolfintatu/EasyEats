@@ -19,13 +19,13 @@ namespace Application.Auth.Commands.UserRegistration
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
-        public Task<Unit> Handle(UserRegistrationModel request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UserRegistrationModel request, CancellationToken cancellationToken)
         {
-            _identityService.Register(
-                new RegistrationModel(null, request.Email, request.Password, request.Name, request.Phone)
+            await _identityService.Register(
+                new RegistrationModel(request.Email, request.Password, request.Name, request.Phone)
                 );
 
-            return Task.FromResult(Unit.Value);
+            return Unit.Value;
         }
     }
 }
