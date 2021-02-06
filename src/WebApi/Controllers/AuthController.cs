@@ -53,7 +53,8 @@ namespace WebApi.Controllers
                         ));
 
                 return Ok();
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

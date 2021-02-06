@@ -17,8 +17,14 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var conn = new ConnectionString(configuration.GetConnectionString("IdentityConnection"));
-            services.AddSingleton(conn);
+            services.AddSingleton(
+                    new ConnectionString(configuration.GetConnectionString("IdentityConnection"))
+                );
+
+            services.AddSingleton(
+                    new JwtCfg(configuration.GetSection("SecretKey").Value)
+                );
+
             services.AddDbContext<AppIdentityDbContext>();
 
             services.AddDbContext<EasyEatsDbContext>(options =>

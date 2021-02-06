@@ -20,20 +20,23 @@ namespace Infrastructure.Services
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly IEmailService emailService;
+        private readonly JwtCfg _jwtCfg;
 
         public IdentityService(
             UserManager<IdentityUser> userManager,
-            IEmailService emailService)
+            IEmailService emailService,
+            JwtCfg jwtCfg)
         {
+            _jwtCfg = jwtCfg;
             this.userManager = userManager;
             this.emailService = emailService;
         }
 
-        public async Task<TokenModel> GetToken(string userName, string password, string grant_type)
+        public async Task<TokenModel> GetToken(string email, string password, string grant_type)
         {
-            if (await VerifyUserData(userName, password))
+            if (await VerifyUserData(email, password))
             {
-                return await GenerateToken(userName);
+                return await GenerateToken(email);
             }
             else
             {
@@ -90,34 +93,35 @@ namespace Infrastructure.Services
 
 
         //Private methods
-        private async Task<bool> VerifyUserData(string userName, string password)
+        private async Task<bool> VerifyUserData(string email, string password)
         {
-            var user = await userManager.FindByEmailAsync(userName);
-            return await userManager.CheckPasswordAsync(user, password) && await userManager.IsEmailConfirmedAsync(user);
+            var user = await userManager.FindByEmailAsync(email);
+            return await userManager.CheckPasswordAsync(user, password);
         }
 
-        private async Task<TokenModel> GenerateToken(string userName)
+        private async Task<TokenModel> GenerateToken(string email)
         {
-            var user = await userManager.FindByEmailAsync(userName);
+            var user = await userManager.FindByEmailAsync(email);
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.Name, email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                 new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
             };
 
-            var token = new JwtSecurityToken(
-                    new JwtHeader(
-                            new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SecretKey")),
-                            SecurityAlgorithms.HmacSha256)),
-                    new JwtPayload(claims));
+            var headers = new JwtHeader(
+                            new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                                _jwtCfg.SecretKey)),
+                            SecurityAlgorithms.HmacSha256));
+
+            var token = new JwtSecurityToken(headers, new JwtPayload(claims));
 
             var output = new TokenModel
             {
                 access_token = new JwtSecurityTokenHandler().WriteToken(token),
-                userName = userName
+                email = email
             };
 
             return output;

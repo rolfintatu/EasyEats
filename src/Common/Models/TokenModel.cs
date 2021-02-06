@@ -8,6 +8,6 @@ namespace Common.Models
     {
 
         public string access_token { get; set; }
-        public string userName { get; set; }
+        public string email { get; set; }
     }
 }
