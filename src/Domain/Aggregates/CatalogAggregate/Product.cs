@@ -25,13 +25,12 @@ namespace Domain.Entities
         public int Id { get; private set; }
         public string Name { get; private set; }
         public decimal Price { get; private set; }
-        public int Quantity { get; private set; }
+        public int StockQuantity { get; private set; }
         public Category Category { get; private set; }
         public int Calories { get; private set; }
         public string Description { get; private set; }
         public bool OutOfStock { get; private set; } = false;
 
-        public List<OrderItems> OrderProducts { get; private set; }
         public List<Image> Images { get; private set; }
 
         public void SetImages(List<Image> images)

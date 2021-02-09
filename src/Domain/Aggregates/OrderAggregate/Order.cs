@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities
+namespace Domain.Aggregates.OrderAggregate
 {
     public class Order : AuditableEntity
     {
@@ -24,9 +24,6 @@ namespace Domain.Entities
 
         public string CustomerId { get; private set; }
         public Customer Customer { get; set; }
-
-        public Bill Bill { get; set; }
-        public Reservation Reservation { get; set; }
         
         public List<OrderItems> OrderItems { get; set; }
     }

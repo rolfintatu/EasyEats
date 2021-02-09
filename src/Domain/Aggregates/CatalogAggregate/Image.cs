@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities
+namespace Domain.Aggregates.CatalogAggregate
 {
     public class Image : AuditableEntity
     {
@@ -17,6 +17,5 @@ namespace Domain.Entities
         public string Url { get; }
 
         public int ProductId { get; }
-        public Product Product { get; set; }
     }
 }

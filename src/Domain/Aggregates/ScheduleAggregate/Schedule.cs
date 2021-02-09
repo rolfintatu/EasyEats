@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Enums
+namespace Domain.Aggregates.ScheduleAggregate
 {
-    public enum TableStatus
+    public class Schedule
     {
-        Busy,
-        Open
     }
 }

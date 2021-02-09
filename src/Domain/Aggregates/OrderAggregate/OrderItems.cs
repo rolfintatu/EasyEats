@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities
+namespace Domain.Aggregates.OrderAggregate
 {
     public class OrderItems : AuditableEntity
     {
@@ -19,16 +19,6 @@ namespace Domain.Entities
         public Order Order { get; set; }
 
         public int ProductId { get; private set; }
-        public Product Product { get; set; }
-
-        public void GetTotal()
-           => this.Total = this.Quantity * Product.Price;
-
-        public void IncreasQuanity()
-        => this.Quantity += 1;
-
-        public void DecreaseQuantity()
-        => this.Quantity -= 1;
 
     }
 }
