@@ -149,6 +149,9 @@ namespace Infrastructure.Intrastructure
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
+                    b.Property<TimeSpan>("ReservationStart")
+                        .HasColumnType("time");
+
                     b.Property<Guid>("ScheduleId")
                         .HasColumnType("uniqueidentifier");
 
@@ -157,9 +160,6 @@ namespace Infrastructure.Intrastructure
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(30)")
                         .HasDefaultValue("New");
-
-                    b.Property<int>("StartHour")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

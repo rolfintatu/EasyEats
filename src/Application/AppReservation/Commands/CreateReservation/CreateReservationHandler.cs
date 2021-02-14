@@ -24,7 +24,7 @@ namespace Application.AppReservation.Commands.CreateReservation
                 return false;
 
             var reservation = Reservation.CreateInstance(
-                    request.Date, request.StartHour, 
+                    request.Date, request.StartHour, request.StartMinutes, 
                     request.Duration, request.CustonerName,
                     request.ScheduleId
                 );
