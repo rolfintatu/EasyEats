@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Aggregates.OrderAggregate
 {
-    public class OrderItems : AuditableEntity
+    public class OrderItems
     {
         public OrderItems(){}
 

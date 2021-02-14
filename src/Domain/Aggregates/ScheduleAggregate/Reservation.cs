@@ -7,27 +7,40 @@ using Domain.Common;
 
 namespace Domain.Aggregates.ScheduleAggregate
 {
-    public class Reservation : AuditableEntity
+    public class Reservation
     {
-
-        public Reservation(){}
-
-        public Reservation(Date date, int hour, int duration)
-            => (Date, Hour, Duration)
-            = (date, hour, duration);
+        private Reservation(){}
+        private Reservation(DateTime date, int startHour, int duration, 
+            string custonerName, Guid scheduleId)
+            => (Date, StartHour, Duration, CustomerName, Stage, ScheduleId)
+            = (date, startHour, duration, custonerName, ReservationStatus.New, scheduleId);
 
         /// <summary>
         /// Minutes.
         /// </summary>
         public const int DefaultDuration = 60;
 
-        public int Id { get; private set; }
-        public Date Date { get; private set; }
-        public int Hour { get; private set; }
-        public int Duration { get; private set; }
-        public ReservationStatus Status { get; set; } = ReservationStatus.Waiting;
+        public Guid Id { get; protected set; } = Guid.NewGuid();
+        public Guid ScheduleId { get; protected set; }
+        public DateTime Date { get; protected set; }
+        public ReservationStatus Stage { get; set; }
+        public int StartHour { get; protected set; }
+        public int Duration { get; protected set; }
+        public string CustomerName { get; protected set; }
 
-        public string CustomerName { get; set; }
-        public int TableNumber { get; set; }
+        public static Reservation CreateInstance(DateTime date, int startHour, int duration, 
+            string custonerName, Guid scheduleId)
+        {
+            if (date < DateTime.UtcNow)
+                throw new ArgumentException();
+
+            if (startHour < 8 || startHour > 20)
+                throw new ArgumentException();
+
+            if (string.IsNullOrWhiteSpace(custonerName))
+                throw new ArgumentNullException();
+
+            return new Reservation(date, startHour, duration, custonerName, scheduleId);
+        }
     }
 }

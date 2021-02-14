@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Aggregates.OrderAggregate
 {
-    public class Customer : AuditableEntity
+    public class Customer
     {
         public string Id { get; set; }
         public string Name { get; set; }

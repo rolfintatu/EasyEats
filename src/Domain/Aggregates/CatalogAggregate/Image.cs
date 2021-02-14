@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Aggregates.CatalogAggregate
 {
-    public class Image : AuditableEntity
+    public class Image
     {
 
         public Image() { }
