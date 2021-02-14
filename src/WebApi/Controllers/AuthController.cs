@@ -1,24 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
-using Infrastructure.Identity;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.Extensions.Configuration;
 using WebApi.Models;
-using MediatR;
-using Queries = Application.Customer.Queries;
-using Application.Common.Interfaces;
-using Application.Common.Dtos;
-using System.Net;
-using Application.Customer.Commands.CreateCustomer;
-using Common.Models;
 using Application.Auth.Commands.LogInUser;
 using Application.Auth.Commands.UserRegistration;
 

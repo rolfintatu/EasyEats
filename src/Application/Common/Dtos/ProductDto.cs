@@ -1,5 +1,6 @@
 ﻿using Application.Common.Mapping;
 using AutoMapper;
+using Domain.Aggregates.CatalogAggregate;
 using Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Application.Common.Dtos
 {
-    public class ProductDto : IMapFrom<Domain.Entities.Product>
+    public class ProductDto : IMapFrom<Product>
     {
 
         public ProductDto(){}
@@ -32,8 +33,8 @@ namespace Application.Common.Dtos
 
         private void Mapping(Profile profile)
         {
-            profile.CreateMap<ProductDto, Domain.Entities.Product>();
-            profile.CreateMap<Domain.Entities.Product, ProductDto>();
+            profile.CreateMap<ProductDto, Product>();
+            profile.CreateMap<Product, ProductDto>();
         }
 
     }

@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Aggregates.ScheduleAggregate;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,26 +12,11 @@ namespace Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Reservation> builder)
         {
-            builder.Property(x => x.Id)
-                   .UseIdentityColumn(1, 1);
+            builder.Property(x => x.Id);
 
-            builder.OwnsOne(x => x.Date);
-
-            builder.Property(x => x.Status)
+            builder.Property(x => x.Stage)
                 .HasColumnType("nvarchar(30)")
-                .HasDefaultValue(ReservationStatus.Waiting);
-
-            builder.HasOne(x => x.Customer)
-                .WithMany(x => x.Reservations)
-                .HasForeignKey(x => x.CustomerId);
-
-            builder.HasOne(x => x.Table)
-                .WithMany(x => x.Reservations)
-                .HasForeignKey(x => x.TableId);
-
-            builder.HasOne(x => x.Order)
-                .WithOne(x => x.Reservation)
-                .HasForeignKey<Reservation>(x => x.OrderId);
+                .HasDefaultValue(ReservationStatus.New);
         }
     }
 }

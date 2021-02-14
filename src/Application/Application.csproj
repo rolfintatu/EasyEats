@@ -5,18 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\Models\**" />
     <Compile Remove="Drink\**" />
     <Compile Remove="Food\**" />
+    <EmbeddedResource Remove="Common\Models\**" />
     <EmbeddedResource Remove="Drink\**" />
     <EmbeddedResource Remove="Food\**" />
+    <None Remove="Common\Models\**" />
     <None Remove="Drink\**" />
     <None Remove="Food\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\Models\" />
-    <Folder Include="Reservation\Queries\ReservationsByTable\" />
-    <Folder Include="Reservation\Queries\ReservationsByUser\" />
   </ItemGroup>
 
   <ItemGroup>

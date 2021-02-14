@@ -30,7 +30,7 @@ namespace WebUi
         {
             services.AddControllers()
                 .AddNewtonsoftJson()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IEasyEatsDbContext>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IReservationRepository>());
 
             Application.IoC.Config(Configuration, services);
             services.AddInfrastructure(Configuration);

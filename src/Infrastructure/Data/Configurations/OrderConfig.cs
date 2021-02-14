@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Aggregates.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -12,10 +12,6 @@ namespace Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.ToTable("Orders");
-
-            builder.HasOne(x => x.Bill)
-                .WithOne(x => x.Order)
-                .HasForeignKey<Bill>(x => x.OrderId);
         }
     }
 }
