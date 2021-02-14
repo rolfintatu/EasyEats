@@ -10,6 +10,7 @@ using System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Infrastructure.Data.Repositories;
 
 namespace Infrastructure
 {
@@ -68,11 +69,12 @@ namespace Infrastructure
 
             services.AddTransient<AppIdentityDbContext>();
             services.AddTransient<INotificationService, NotificationService>();
-            services.AddScoped<IEasyEatsDbContext>(x => x.GetService<EasyEatsDbContext>());
             services.AddScoped<IDateTime, DateTimeService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IStorageService, AzureStorage>();
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IScheduleRepository, ScheduleRepository>();
+            services.AddTransient<IReservationRepository, ReservationRepository>();
             services.AddDataProtection();
 
             return services;

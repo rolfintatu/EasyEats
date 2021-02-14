@@ -4,11 +4,11 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Entities = Domain.Entities;
+using Domain.Aggregates.ScheduleAggregate;
 
 namespace Application.Common.Dtos
 {
-    public class ReservationDetailsDto : IMapFrom<Entities.Reservation>
+    public class ReservationDetailsDto : IMapFrom<Reservation>
     {
 
         public ReservationDetailsDto() { }
@@ -23,7 +23,7 @@ namespace Application.Common.Dtos
 
         private void Mapping (Profile profile)
         {
-            profile.CreateMap<Entities.Reservation, ReservationDetailsDto>();
+            profile.CreateMap<Reservation, ReservationDetailsDto>();
         }
 
     }
@@ -37,12 +37,10 @@ namespace Application.Common.Dtos
             : base(date, hour, duration) { }
 
         public CustomerDetailsDto Customer { get; set; }
-        public TableDetailsDto Table { get; set; }
 
         private void Mapping(Profile profile)
         {
-            profile.CreateMap<Entities.Reservation, ComplexReservationDto>()
-                .ForMember(x => x.Customer, x =>x.MapFrom(o => o.Customer));
+            profile.CreateMap<Reservation, ComplexReservationDto>();
         }
     }
 
@@ -54,12 +52,10 @@ namespace Application.Common.Dtos
         public MixReservationDto(Date date, int hour, int duration)
             : base(date, hour, duration) { }
 
-        public TableDetailsDto Table { get; set; }
 
         private void Mapping(Profile profile)
         {
-            profile.CreateMap<Entities.Reservation, MixReservationDto>()
-                .ForMember(x => x.Table, x => x.MapFrom(x => x.Table));
+            profile.CreateMap<Reservation, MixReservationDto>();
             
         }
     }

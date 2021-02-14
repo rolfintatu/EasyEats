@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Aggregates.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -16,10 +16,6 @@ namespace Infrastructure.Data.Configurations
 
             builder.Property(x => x.Total)
                 .HasColumnType("decimal(18,2)");
-
-            builder.HasOne(x => x.Product)
-                .WithMany(x => x.OrderProducts)
-                .HasForeignKey(x => x.ProductId);
 
             builder.HasOne(x => x.Order)
                 .WithMany(x => x.OrderItems)

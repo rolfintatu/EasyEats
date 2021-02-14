@@ -4,11 +4,11 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Entities = Domain.Entities;
+using Domain.Aggregates.OrderAggregate;
 
 namespace Application.Common.Dtos
 {
-    public class CustomerDetailsDto : IMapFrom<Entities.Customer>
+    public class CustomerDetailsDto : IMapFrom<Customer>
     {
 
         public CustomerDetailsDto(){}
@@ -23,7 +23,7 @@ namespace Application.Common.Dtos
 
         private void Mapping(Profile profile)
         {
-            profile.CreateMap<Entities.Customer, CustomerDetailsDto>();
+            profile.CreateMap<Customer, CustomerDetailsDto>();
         }
     }
 
@@ -42,8 +42,7 @@ namespace Application.Common.Dtos
 
         private void Mapping(Profile profile)
         {
-            profile.CreateMap<Entities.Customer, ComplexCustomerDto>()
-                .ForMember(x => x.Reservations, opt => opt.MapFrom(src => src.Reservations))
+            profile.CreateMap<Customer, ComplexCustomerDto>()
                 .ForMember(x => x.Orders, opt => opt.MapFrom(src => src.Orders));
         }
 

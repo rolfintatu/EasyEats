@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Application.Reservation.Commands.CreateReservation;
-using Application.Reservation.Commands.DeleteReservation;
-using Application.Reservation.Queries.ReservationsByUser;
-using Application.Reservation.Queries.ReservationsList;
+using Application.AppReservation.Commands.CancelReservation;
+using Application.AppReservation.Commands.CreateReservation;
+using Application.AppSchedule.Commands.CreateSchedule;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,30 +12,54 @@ namespace WebApi.Controllers
     [ApiController]
     public class ReservationController : BaseController
     {
-        //Queries
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-            => Ok(await mediator.Send(new ReservationsListQuery()));
+        ////Queries
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll()
+        //    => Ok(await mediator.Send());
 
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByUser([FromRoute] int id)
-            => Ok(await mediator.Send(new ResByUserCom()));
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetByUser([FromRoute] int id)
+        //    => Ok(await mediator.Send());
 
 
         //Commands
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task Create([FromBody] CreateReservationCom command)
-            => await mediator.Send(command);
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromBody] CreateReservationCommand command)
+        {
+            bool response = false;
+
+            var scheduleResponse = await mediator.Send(
+                    new CreateScheduleCommand() { Date = command.Date }
+                );
+
+            if (scheduleResponse != Guid.Empty)
+            {
+                command.ScheduleId = scheduleResponse;
+                response = await mediator.Send(command);
+            }
+
+            if (response)
+                return Ok();
+            else
+                return BadRequest();
+        }
 
 
-        [HttpDelete("{id}")]
+        [HttpPost("reservationId")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task Delete([FromBody] int id)
-            => await mediator.Send(new CancelReservationCom() { Id = id });
+        public async Task<IActionResult> Cancel(Guid reservationId)
+        {
+            var response = await mediator.Send(new CancelReservationCommand(reservationId));
+
+            if (response)
+                return Ok();
+            else
+                return NotFound();
+        }
 
     }
 }
