@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.AppReservation.Commands.CancelReservation;
 using Application.AppReservation.Commands.CreateReservation;
@@ -29,6 +30,11 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateReservationCommand command)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(
+                        ModelState.Keys.SelectMany(x => this.ModelState[x].Errors)
+                    );
+
             bool response = false;
 
             var scheduleResponse = await mediator.Send(
@@ -53,6 +59,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Cancel(Guid reservationId)
         {
+            if (reservationId == null || reservationId == default(Guid))
+                return BadRequest("Please provide a valid reservation.");
+
             var response = await mediator.Send(new CancelReservationCommand(reservationId));
 
             if (response)
