@@ -13,50 +13,18 @@ namespace Application.Common.Dtos
 
         public ReservationDetailsDto() { }
 
-        public ReservationDetailsDto(Date date, int hour, int duration) 
-            => (Date, Hour, Duration) = (date, hour, duration);
+        public ReservationDetailsDto(DateTime date, TimeSpan startReservation, int duration) 
+            => (Date, ReservationStart, Duration) = (date, startReservation, duration);
 
-        public Date Date { get; set; }
-        public int Hour { get; set;  }
+        public DateTime Date { get; set; }
+        public TimeSpan ReservationStart { get; set;  }
         public int Duration { get; set; }
-
+        public string CustomerName { get; set; }
 
         private void Mapping (Profile profile)
         {
             profile.CreateMap<Reservation, ReservationDetailsDto>();
         }
 
-    }
-
-    public class ComplexReservationDto : ReservationDetailsDto
-    {
-
-        public ComplexReservationDto() { }
-
-        public ComplexReservationDto(Date date, int hour, int duration)
-            : base(date, hour, duration) { }
-
-        public CustomerDetailsDto Customer { get; set; }
-
-        private void Mapping(Profile profile)
-        {
-            profile.CreateMap<Reservation, ComplexReservationDto>();
-        }
-    }
-
-    public class MixReservationDto : ReservationDetailsDto
-    {
-
-        public MixReservationDto() { }
-
-        public MixReservationDto(Date date, int hour, int duration)
-            : base(date, hour, duration) { }
-
-
-        private void Mapping(Profile profile)
-        {
-            profile.CreateMap<Reservation, MixReservationDto>();
-            
-        }
     }
 }

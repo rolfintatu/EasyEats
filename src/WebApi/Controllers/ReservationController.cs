@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.AppReservation.Commands.CancelReservation;
 using Application.AppReservation.Commands.CreateReservation;
+using Application.AppReservation.Queries.GetReservationDetails;
 using Application.AppSchedule.Commands.CreateSchedule;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +21,22 @@ namespace WebApi.Controllers
         //    => Ok(await mediator.Send());
 
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetByUser([FromRoute] int id)
-        //    => Ok(await mediator.Send());
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ReservationDetails(Guid id)
+        {
+
+            if (id == null || id == default(Guid))
+                return BadRequest("Please provide a valid id.");
+
+            var reservationDetails = await mediator.Send(
+                    new GetReservationDetailsQuery() { ReservationId = id }
+                );
+
+            if (reservationDetails is null)
+                return NotFound();
+            else
+                return Ok(reservationDetails);
+        }
 
 
         //Commands

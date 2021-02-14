@@ -1,7 +1,11 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Dtos;
+using Application.Common.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain.Aggregates.ScheduleAggregate;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +31,7 @@ namespace Infrastructure.Data.Repositories
                 {
                     reservation.Stage = Domain.Enums.ReservationStatus.Canceled;
                     _context.Reservations.Update(reservation);
-                    _context.SaveChangesAsync(new CancellationToken());
+                    await _context.SaveChangesAsync(new CancellationToken());
                 }
 
                 return true;
@@ -57,6 +61,15 @@ namespace Infrastructure.Data.Repositories
         public async Task<Reservation> GetById(Guid Id)
         {
             return await _context.Reservations.FindAsync(Id);
+        }
+
+        public Task<Reservation> GetReservationById(Guid reservationId)
+        {
+            var reservationDetails = _context.Reservations
+                .Where(x => x.Id == reservationId)
+                .FirstOrDefault();
+
+            return Task.FromResult(reservationDetails);
         }
     }
 }

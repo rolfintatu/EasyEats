@@ -26,25 +26,4 @@ namespace Application.Common.Dtos
             profile.CreateMap<Customer, CustomerDetailsDto>();
         }
     }
-
-    public class ComplexCustomerDto : CustomerDetailsDto
-    {
-
-        public ComplexCustomerDto() { }
-
-        public ComplexCustomerDto(List<MixReservationDto> reservations, List<OrderDto> orders
-            , string name, int phone, Address address)
-            : base(name, phone, address) =>
-            (this.Reservations, this.Orders) = (reservations, orders);
-
-        public List<MixReservationDto> Reservations { get; set; }
-        public List<OrderDto> Orders { get; set; }
-
-        private void Mapping(Profile profile)
-        {
-            profile.CreateMap<Customer, ComplexCustomerDto>()
-                .ForMember(x => x.Orders, opt => opt.MapFrom(src => src.Orders));
-        }
-
-    }
 }

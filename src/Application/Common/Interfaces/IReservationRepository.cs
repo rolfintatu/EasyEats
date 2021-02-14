@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates.ScheduleAggregate;
+﻿using Application.Common.Dtos;
+using Domain.Aggregates.ScheduleAggregate;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,5 +10,6 @@ namespace Application.Common.Interfaces
     public interface IReservationRepository : IBaseRepository<Reservation>
     {
         Task<bool> CancelReservation(Guid reservationId);
+        Task<Reservation> GetReservationById(Guid reservationId);
     }
 }

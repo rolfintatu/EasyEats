@@ -16,6 +16,7 @@ namespace Infrastructure.Data
 {
     public class EasyEatsDbContext : DbContext
     {
+
         public EasyEatsDbContext(DbContextOptions options) 
             : base(options)
         { }
@@ -28,6 +29,5 @@ namespace Infrastructure.Data
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
     }
 }
